@@ -16,6 +16,7 @@
 					<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/include/SDL2" />
 				</Compiler>
 				<Linker>
+					<Add option="-mconsole" />
 					<Add library="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib/libSDL2main.a" />
 					<Add library="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib/libSDL2.a" />
 					<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib" />
@@ -53,6 +54,8 @@
 			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
 		</ExtraCommands>
 		<Unit filename="main.cpp" />
+		<Unit filename="menu.cpp" />
+		<Unit filename="menu.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
