@@ -1,9 +1,11 @@
 # depslib dependency file v1.0
-1759043963 source:d:\làm game\sytuan\main.cpp
+1759310165 source:d:\làm game\sytuan\main.cpp
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
 	"menu.h"
+	"map1.h"
+	"player.h"
 	<windows.h>
 
 1756738932 d:\sdl2-2.32.10\x86_64-w64-mingw32\include\sdl2\sdl.h
@@ -451,7 +453,7 @@
 1758911050 source:d:\làm game\sytuan\game.cpp
 	<SDL.h>
 
-1759043963 source:d:\làm game\sytuan\menu.cpp
+1759313106 source:d:\làm game\sytuan\menu.cpp
 	"menu.h"
 
 1758911010 d:\làm game\sytuan\menu.cpp
@@ -471,4 +473,19 @@
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
+
+1759330806 source:d:\làm game\sytuan\map1.cpp
+	"map1.h"
+	<iostream>
+
+1759330806 d:\làm game\sytuan\map1.h
+	<SDL.h>
+	<SDL2/SDL_image.h>
+	<vector>
+
+1759231546 source:d:\làm game\sytuan\player.cpp
+
+1759231546 d:\làm game\sytuan\player.h
+
+1759235914 source:d:\làm game\sytuan\layer.cpp
 
