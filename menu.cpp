@@ -3,27 +3,27 @@
 bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     SDL_Surface* anhnen = IMG_Load("nen.png");     // tai anh len
     if (!anhnen) {
-        std::cout << "Lỗi ảnh: " << IMG_GetError() <<std::endl;   // xac dinh loi cua anh
+        std::cout <<IMG_GetError() <<std::endl;   // xac dinh loi cua anh
         return false;
     }
     SDL_Texture* nen =SDL_CreateTextureFromSurface(ve,anhnen);    // chuyen anh trong ram thanh anh trong gpu de render
     SDL_FreeSurface(anhnen);    // giai phong ram
     if (!nen) {
-        std::cout << "Lỗi tạo texture: " << SDL_GetError()<<std::endl;  // xac dinh loi
-        return false;
+    std::cout <<SDL_GetError()<<std::endl;  // xac dinh loi
+    return false;
     }
 
 
    SDL_Surface* anhnen2 = IMG_Load("nen2.png");     // tai anh nen 2
     if (!anhnen2) {
-        std::cout << "Lỗi ảnh nen2.png: " << IMG_GetError() <<std::endl;   // xac dinh loi cua anh
-        return false;
+    std::cout << "Lỗi ảnh nen2.png: " << IMG_GetError() <<std::endl;   // xac dinh loi cua anh
+    return false;
     }
     SDL_Texture* nen2 =SDL_CreateTextureFromSurface(ve,anhnen2);    // chuyen anh trong ram thanh anh trong gpu de render
     SDL_FreeSurface(anhnen2);    // giai phong ram
     if (!nen2) {
-        std::cout << "Lỗi tạo texture nen2.png: " << SDL_GetError()<<std::endl;  // xac dinh loi
-        return false;
+    std::cout << "Lỗi tạo texture nen2.png: " << SDL_GetError()<<std::endl;  // xac dinh loi
+    return false;
     }
 
     float nen2X = 0;   // toa do cuon ngang cua nen2
@@ -38,7 +38,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     // tai anh nut start (5 frame)
     SDL_Texture* texstart[5] = {nullptr};
     for (int i = 0; i < 5; i++) {
-        std::string filename = "nutstart" + std::to_string(i+1) + ".png";
+        std::string filename = "assets/buttons/nutstart" + std::to_string(i+1) + ".png";
         SDL_Surface* surf = IMG_Load(filename.c_str());
         if (surf) {
             texstart[i] = SDL_CreateTextureFromSurface(ve, surf);
@@ -51,7 +51,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     // tai anh nut options (5 frame)
     SDL_Texture* texoptions[5] = {nullptr};
     for (int i = 0; i < 5; i++) {
-        std::string filename = "nutoptions" + std::to_string(i+1) + ".png";
+        std::string filename = "assets/buttons/nutoptions" + std::to_string(i+1) + ".png";
         SDL_Surface* surf = IMG_Load(filename.c_str());
         if (surf) {
             texoptions[i] = SDL_CreateTextureFromSurface(ve, surf);
@@ -64,7 +64,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     // tai anh nut exit (5 frame)
     SDL_Texture* texexit[5] = {nullptr};
     for (int i = 0; i < 5; i++) {
-        std::string filename = "nutexit" + std::to_string(i+1) + ".png";
+        std::string filename = "assets/buttons/nutexit" + std::to_string(i+1) + ".png";
         SDL_Surface* surf = IMG_Load(filename.c_str());
         if (surf) {
             texexit[i] = SDL_CreateTextureFromSurface(ve, surf);
@@ -161,7 +161,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
         SDL_Rect nen2Rect2 = {nen2X + 1280, 0, 1280, 720};
         SDL_RenderCopy(ve, nen2, NULL, &nen2Rect1);
         SDL_RenderCopy(ve, nen2, NULL, &nen2Rect2);
-        nen2X -= 0.3;   // toc do cuon cua nen 2
+        nen2X -= 1;   // toc do cuon cua nen
         if (nen2X <= -1280) nen2X = 0;
 
         // ve nut start

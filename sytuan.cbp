@@ -53,8 +53,6 @@
 		<ExtraCommands>
 			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
 		</ExtraCommands>
-		<Unit filename="layer.cpp" />
-		<Unit filename="layer.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="map1.cpp" />
 		<Unit filename="map1.h" />
