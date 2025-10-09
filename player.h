@@ -5,6 +5,10 @@
 #include <string>
 #include "map1.h"
 
+
+
+class Map1; // Khai báo sớm để compiler biết Map1 là một class
+
 class Player {
 public:
     Player(SDL_Renderer* renderer, float x, float y);

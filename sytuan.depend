@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759732584 source:d:\làm game\sytuan\main.cpp
+1760026534 source:d:\làm game\sytuan\main.cpp
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -474,22 +474,26 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1759779278 source:d:\làm game\sytuan\map1.cpp
+1760028251 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
+	"player.h"
+	<cmath>
 
-1759778161 d:\làm game\sytuan\map1.h
+1760028131 d:\làm game\sytuan\map1.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<vector>
+	"player.h"
 
-1759778161 source:d:\làm game\sytuan\player.cpp
+1760025739 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
 	"map1.h"
+	<cmath>
 
-1759778161 d:\làm game\sytuan\player.h
+1760022800 d:\làm game\sytuan\player.h
 	<SDL.h>
 	<string>
 	"map1.h"

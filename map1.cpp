@@ -1,52 +1,46 @@
 #include "map1.h"
 #include <iostream>
-
+#include "player.h"
+#include <cmath>
 
 int Map1::chieungang() const {
     return (int)mapData[0].size() * tileSize;
 }
 
-
-
 int Map1::chieudoc() const {
     return (int)mapData.size() * tileSize;
 }
-Map1::Map1(SDL_Renderer* renderer) {  //constructor
 
+Map1::Map1(SDL_Renderer* renderer) {  // constructor
     nen = IMG_LoadTexture(renderer, "nen.png");
-if (!nen) {
-    std::cout << "Lỗi load nền: " << IMG_GetError() << std::endl;}
+    if (!nen) {
+        std::cout << "Lỗi load nền: " << IMG_GetError() << std::endl;
+    }
 
+    int level[15][40] = {
+        {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,21,24,0,0,0,7},
+        {7,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,17,17,17,24,0,0,7},
+        {7,0,0,0,0,0,0,0,0,0,0,0,0,23,21,21,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,17,17,17,20,0,0,7},
+        {7,0,26,0,0,0,0,0,0,0,0,0,0,18,17,17,17,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,17,17,17,15,0,0,7},
+        {7,0,23,21,24,0,0,0,0,0,0,0,0,0,18,16,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,16,15,0,0,0,4},
+        {7,0,19,17,20,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,26,0,0,0,0,0,0,25,0,0,0,14,0,0,0,0,3},
+        {9,0,18,16,15,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,4,1,1,9,0,0,0,0,0,4,9,0,0,14,0,0,10,0,3},
+        {8,0,0,14,0,0,0,0,0,0,25,0,0,0,0,13,0,0,0,0,6,3,2,2,8,0,0,0,0,0,3,8,6,0,13,0,0,11,12,3},
+        {8,0,0,14,0,0,0,0,0,4,1,1,1,1,1,1,1,1,1,1,1,2,2,2,8,0,0,0,0,0,3,4,1,1,1,1,1,1,1,2},
+        {8,0,0,14,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
+        {8,6,0,13,0,0,0,4,1,1,9,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
+        {2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,7,7,7,7,7,3,2,2,2,2,2,2,2,2,2},
+    };
 
-
-    // ma trận map
-   int level[15][40] = {
-    {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,21,24,0,0,0,7},
-    {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,17,17,17,24,0,0,7},
-    {7,0,0,0,0,0,0,0,0,0,0,0,0,23,21,21,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,17,17,17,20,0,0,7},
-    {7,0,0,0,0,0,0,0,0,0,0,0,0,18,17,17,17,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,17,17,17,15,0,0,7},
-    {7,0,23,21,24,0,0,0,0,0,0,0,0,0,18,16,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,16,15,0,0,0,4},
-    {7,0,19,17,20,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,14,0,0,0,0,3},
-    {9,0,18,16,15,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,4,1,1,9,0,0,0,0,0,4,9,0,0,14,0,0,10,0,3},
-    {8,0,0,14,0,0,0,0,0,0,25,0,0,0,0,13,0,0,0,0,6,3,2,2,8,0,0,0,0,0,3,8,6,0,13,0,0,11,12,3},
-    {8,0,0,14,0,0,0,0,0,4,1,1,1,1,1,1,1,1,1,1,1,2,2,2,8,0,0,0,0,0,3,4,1,1,1,1,1,1,1,2}, // co
-    {8,0,0,14,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2}, // dat
-    {8,6,0,13,0,0,0,4,1,1,9,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
-    {2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
-    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
-    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
-    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,7,7,7,7,7,3,2,2,2,2,2,2,2,2,2},
-};
-
-
-
-
-    // copy mảng level vào mapData
     mapData.resize(15, std::vector<int>(40));
     for (int y = 0; y < 15; y++) {
         for (int x = 0; x < 40; x++) {
             mapData[y][x] = level[y][x];
         }
+
     }
 
     // load tile textures
@@ -74,15 +68,27 @@ if (!nen) {
     tile23 = IMG_LoadTexture(renderer, "assets/map/latraitren.png");
     tile24 = IMG_LoadTexture(renderer, "assets/map/laphaitren.png");
     tile25 = IMG_LoadTexture(renderer, "assets/map/muitenphai.png");
+    tile26 = IMG_LoadTexture(renderer, "assets/map/chim1.png"); // chim đậu
+    tile27 = IMG_LoadTexture(renderer, "assets/map/chim2.png"); // chim đậu
+    tile28 = IMG_LoadTexture(renderer, "assets/map/chim3.png"); // chim đậu
+    tile29 = IMG_LoadTexture(renderer, "assets/map/chim4.png"); // chim đậu
 
+    if (!tile1 || !tile2 || !tile3 || !tile4 || !tile5) {   // test load
+        std::cout << IMG_GetError() << std::endl;
+    }
 
-    if (!tile1||!tile2||!tile3||!tile4||!tile5) {   // viet vai cai test
-    std::cout << IMG_GetError() << std::endl;
-}
     tileSize = 64; // mỗi ô 64x64 px
+
+    // Chim đậu animation
+    birdFrame = false;
+    birdTimer = 0.0f;
+
+    // Animation cây
+    treeFrame = false;
+    treeTimer = 0.0f;
 }
 
-Map1::~Map1() {   // giai phong ram
+Map1::~Map1() {   // giải phóng RAM
     if (tile1) SDL_DestroyTexture(tile1);
     if (tile2) SDL_DestroyTexture(tile2);
     if (tile3) SDL_DestroyTexture(tile3);
@@ -102,29 +108,32 @@ Map1::~Map1() {   // giai phong ram
     if (tile18) SDL_DestroyTexture(tile18);
     if (tile19) SDL_DestroyTexture(tile19);
     if (tile20) SDL_DestroyTexture(tile20);
-     if (tile21) SDL_DestroyTexture(tile21);
+    if (tile21) SDL_DestroyTexture(tile21);
     if (tile22) SDL_DestroyTexture(tile22);
     if (tile23) SDL_DestroyTexture(tile23);
     if (tile24) SDL_DestroyTexture(tile24);
     if (tile25) SDL_DestroyTexture(tile25);
+    if (tile26) SDL_DestroyTexture(tile26); // chim
+    if (tile27) SDL_DestroyTexture(tile27); // chim
+     if (tile28) SDL_DestroyTexture(tile28); // chim
+    if (tile29) SDL_DestroyTexture(tile29); // chim
     if (nen) SDL_DestroyTexture(nen);
 }
 
-void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render ve map theo win
-
-
+void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo window
     SDL_RenderCopy(renderer, nen, NULL, NULL);
-
 
     for (int y = 0; y < (int)mapData.size(); y++) {
         for (int x = 0; x < (int)mapData[y].size(); x++) {
             int tileType = mapData[y][x];
-            if (tileType == 0||tileType == TILE_DEATH) continue;
+            if (tileType == 0 || tileType == TILE_DEATH) continue;
 
-            SDL_Rect src = {0,0,tileSize,tileSize};
-            SDL_Rect dst = {x*tileSize - camera.x, y*tileSize - camera.y, tileSize, tileSize};
+            SDL_Rect src = {0, 0, tileSize, tileSize};
+            SDL_Rect dst = {x * tileSize - camera.x, y * tileSize - camera.y, tileSize, tileSize};
 
-            if (tileType == 1) SDL_RenderCopy(renderer, tile1, &src, &dst);    // Chọn loại tile để vẽ
+            SDL_Texture* current = nullptr; // khai báo biến chung
+
+            if (tileType == 1) SDL_RenderCopy(renderer, tile1, &src, &dst);
             else if (tileType == 2) SDL_RenderCopy(renderer, tile2, &src, &dst);
             else if (tileType == 3) SDL_RenderCopy(renderer, tile3, &src, &dst);
             else if (tileType == 4) SDL_RenderCopy(renderer, tile4, &src, &dst);
@@ -139,66 +148,53 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render ve map th
             else if (tileType == 16) SDL_RenderCopy(renderer, tile16, &src, &dst);
             else if (tileType == 17) SDL_RenderCopy(renderer, tile17, &src, &dst);
             else if (tileType == 18) SDL_RenderCopy(renderer, tile18, &src, &dst);
-             else if (tileType == 19) SDL_RenderCopy(renderer, tile19, &src, &dst);
+            else if (tileType == 19) SDL_RenderCopy(renderer, tile19, &src, &dst);
             else if (tileType == 20) SDL_RenderCopy(renderer, tile20, &src, &dst);
-             else if (tileType == 21) SDL_RenderCopy(renderer, tile21, &src, &dst);
-            else if (tileType == 22) SDL_RenderCopy(renderer, tile22, &src, &dst);
-            else if (tileType == 23) SDL_RenderCopy(renderer, tile23, &src, &dst);
-             else if (tileType == 24) SDL_RenderCopy(renderer, tile24, &src, &dst);
-            else if (tileType == 25) SDL_RenderCopy(renderer, tile25, &src, &dst);
+            else if (tileType == 21) SDL_RenderCopy(renderer, tile21, &src, &dst);
+        else if (tileType == 22) SDL_RenderCopy(renderer, tile22, &src, &dst);
+        else if (tileType == 23) SDL_RenderCopy(renderer, tile23, &src, &dst);
+        else if (tileType == 24) SDL_RenderCopy(renderer, tile24, &src, &dst);
+        else if (tileType == 25) SDL_RenderCopy(renderer, tile25, &src, &dst);
 
-
+            // animation cây
             else if (tileType == 5 || tileType == 6) {
-            SDL_Texture* current = treeFrame ? tile5 : tile6;
-            SDL_RenderCopy(renderer, current, &src, &dst);
+                current = treeFrame ? tile5 : tile6;
+                SDL_RenderCopy(renderer, current, &src, &dst);
+            }
+
+            // animation chim
+            else if (tileType == 26 || tileType == 27 ) {
+                current = birdFrame ? tile27 : tile26;
+                SDL_RenderCopy(renderer, current, &src, &dst);
+            }
+            // animation chim 2 (mới)
+        else if (tileType == 28 || tileType == 29) {
+              SDL_Texture* bird2Current = bird2Frame ? tile29 : tile28;
+           SDL_RenderCopy(renderer, bird2Current, &src, &dst);
 }
-            else if (tileType >= 10 && tileType <= 25) {
-    SDL_Texture* current = nullptr;
-
-    if (tileType == 10) current = tile10;
-    else if (tileType == 11) current = tile11;
-    else if (tileType == 12) current = tile12;
-    else if (tileType == 13) current = tile13;
-    else if (tileType == 14) current = tile14;
-    else if (tileType == 15) current = tile15;
-    else if (tileType == 16) current = tile16;
-    else if (tileType == 17) current = tile17;
-    else if (tileType == 18) current = tile18;
-    else if (tileType == 19) current = tile19;
-    else if (tileType == 20) current = tile20;
-    else if (tileType == 21) current = tile21;
-    else if (tileType == 22) current = tile22;
-    else if (tileType == 23) current = tile23;
-    else if (tileType == 24) current = tile24;
-    else if (tileType == 25) current = tile25;
-
-
-
-
-    SDL_Rect tileRect = { x * tileSize, y * tileSize, tileSize, tileSize };
-
-    if (current)
-        SDL_RenderCopy(renderer, current, NULL, &tileRect);
-}
+        }
+    }
 }
 
+void Map1::update(float deltaTime, Player& player) {
+    //  Animation chim đậu
+    birdTimer += deltaTime;
+    if (birdTimer >= 0.7f) {
+        birdTimer = 0.0f;
+        birdFrame = !birdFrame;
+    }
 
+    //  Animation chim đậu 2
+    bird2Timer += deltaTime;
+    if (bird2Timer >= 0.6f) {
+        bird2Timer = 0.0f;
+        bird2Frame = !bird2Frame;
+    }
 
-
-}
-}
-
-
-
-
-
-
-
-
-void Map1::update(float deltaTime) {
+    //  Animation cây
     treeTimer += deltaTime;
-    if (treeTimer >= 0.4f) { // sau 0.4 giây đổi frame
+    if (treeTimer >= 0.4f) {
         treeTimer = 0.0f;
-        treeFrame = !treeFrame; // chuyển tile5 <-> tile6
+        treeFrame = !treeFrame;
     }
 }

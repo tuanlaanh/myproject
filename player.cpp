@@ -2,6 +2,8 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include "map1.h"
+#include <cmath>
+
 
 //Constan
 const float MOVE_SPEED = 300.0f;
@@ -130,7 +132,7 @@ void Player::update(float deltaTime, Map1& map) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 25))
+                (tileType < 10 || tileType > 27))
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)posY, dstRect.w, dstRect.h};
@@ -160,7 +162,7 @@ void Player::update(float deltaTime, Map1& map) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 25))
+                (tileType < 10 || tileType > 27))
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)newY, dstRect.w, dstRect.h};
@@ -194,7 +196,11 @@ void Player::update(float deltaTime, Map1& map) {
     } else {
         currentState = 0;   // đứng im player.png
     }
+
+
+
 }
+
 
 
 void Player::render(SDL_Renderer* renderer, SDL_Rect camera) {

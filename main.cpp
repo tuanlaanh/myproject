@@ -8,115 +8,93 @@
 #ifdef main   // dung de fix main k chay dc
 #undef main
 #endif
-int main(int argc, char* argv[]){
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {  //khoi tao cua sorender vaxac dinh loi
-        std::cout <<SDL_GetError() <<std::endl;
+
+int main(int argc, char* argv[]) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {  //khoi tao cua so render va xac dinh loi
+        std::cout << SDL_GetError() << std::endl;
         return 1;
     }
 
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {  // tuong tu
-        std::cout <<IMG_GetError()<< std::endl;
+        std::cout << IMG_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
 
-    SDL_Window*cuaso =SDL_CreateWindow("Game cua toi",    // tao cua so render
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1280, 720, SDL_WINDOW_SHOWN);
+    SDL_Window* cuaso = SDL_CreateWindow("Game cua toi",    // tao cua so render
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
 
-    SDL_Renderer*ve=SDL_CreateRenderer(cuaso,-1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC); //khoi tao bo ve // bo sung vsync
+    SDL_Renderer* ve = SDL_CreateRenderer(
+        cuaso, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); //khoi tao bo ve // bo sung vsync
 
-    bool vaogame =hienthimenu(cuaso, ve); // dung de hien thi menu
+    bool vaogame = hienthimenu(cuaso, ve); // dung de hien thi menu
 
     if (vaogame) {
-    std::cout << "yo";
+        std::cout << "yo";
 
-    Map1 map(ve);
-    Player player(ve, 300, 500); // toa do spon player
-    SDL_Rect camera ={0, 0, 1280, 720};
+        Map1 map(ve);
+        Player player(ve, 300, 500); // toa do spon player
+        SDL_Rect camera = {0, 0, 1280, 720};
 
-    bool running = true;   // dieukhien vl chinh xdinh game chay hay end
-    SDL_Event e;// luu skien dauvao
+        bool running = true;   // dieu khien vl chinh xdinh game chay hay end
+        SDL_Event e;           // luu skien dau vao
 
+        // gioi han fps cho card do hoa chay do nong may
+        const int FPS = 60;                // fps
+        const int timefps = 1000 / FPS;    // time 1 khung hinh (ms)
 
-    // gioi han fps cho card do hoa chay do nong may
-const int FPS = 60;                // fps
-const int timefps = 1000 / FPS; // time 1 khung hinh (ms)
+        Uint32 timestart; // bat dau 1 kh
+        int frametime;    // time xu ly 1 khung hinh
 
-Uint32 timestart; // bat dau 1 kh
-int frametime;     // time xu ly 1 khung hinh
+        Uint32 lastTime = SDL_GetTicks(); // thoi gian truoc do
 
-Uint32 lastTime = SDL_GetTicks(); // thoi gian truoc do
+        while (running) {
+            timestart = SDL_GetTicks();  // bat dau 1 khung hinh
 
-
-
-    while (running){
-
-              timestart = SDL_GetTicks();  // bat dau 1 khung hinh
-
-
-        while (SDL_PollEvent(&e)){ //xac dinh sk dau vao va tra ve true neu nhan sk , tv false
-            if (e.type ==SDL_QUIT) {
-                running = false;
+            while (SDL_PollEvent(&e)) { //xac dinh sk dau vao va tra ve true neu nhan sk , tv false
+                if (e.type == SDL_QUIT) {
+                    running = false;
+                }
+                player.handleEvent(e); // xu ly phim dieu khien player
             }
-            player.handleEvent(e); // xu ly phim dieu khien player
-        }
 
             // tinh deltaTime
-        Uint32 currentTime = SDL_GetTicks();
-float deltaTime = (currentTime - lastTime) / 1000.0f;
-lastTime = currentTime;
+            Uint32 currentTime = SDL_GetTicks();
+            float deltaTime = (currentTime - lastTime) / 1000.0f;
+            lastTime = currentTime;
 
-        // update player
-            player.update(deltaTime, map);//tg giua 2 khung hinh
+            // update player
+            player.update(deltaTime, map); // tg giua 2 khung hinh
 
+            // update map (animation + chim bay)
+            map.update(deltaTime,player);
 
+            camera.x = player.getX() - camera.w / 2; // dat cam cho nv giua map
+            camera.y = player.getY() - camera.h / 2;
+            if (camera.x < 0) { camera.x = 0; } // chan cam 0 ra ngoai map bien trai tren
+            if (camera.y < 0) { camera.y = 0; }  // chan cam 0 ra ngoai map
+            if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }  // ngat cam
+            if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }   // bien phai duoi
 
-        camera.x = player.getX() - camera.w / 2; //dat cam cho nv giua map
-        camera.y = player.getY() - camera.h / 2;
-        if (camera.x <0){camera.x =0;} // chan cam 0 ra ngoai map   bien trai tren
-        if (camera.y <0) {camera.y=0;}  // chan cam 0 ra ngoai map
-        if (camera.x > map.chieungang() - camera.w){camera.x = map.chieungang() - camera.w;}  //ngat cam
-        if (camera.y > map.chieudoc() - camera.h) {camera.y = map.chieudoc() - camera.h; }   //    bien phai duoi
+            // --- ve man hinh ---
+            SDL_SetRenderDrawColor(ve, 0, 0, 0, 255); // xóa màn hình
+            SDL_RenderClear(ve);
 
+            // ve map va player
+            map.render(ve, camera);
+            player.render(ve, camera);
 
+            SDL_RenderPresent(ve); // hien thi khung hinh
 
-
-
-
-        SDL_SetRenderDrawColor(ve, 0, 0, 0, 255); // xóa màn hình
-        SDL_RenderClear(ve);
-
-        // ...
-SDL_SetRenderDrawColor(ve, 0, 0, 0, 255); // xóa màn hình
-SDL_RenderClear(ve);
-
-//  thêm dòng này để update animation cây
-map.update(deltaTime);
-
-// vẽ map và player như cũ
-map.render(ve, camera);
-player.render(ve, camera);
-
-SDL_RenderPresent(ve);
-
-        map.render(ve, camera);
-         player.render(ve, camera);
-
-        SDL_RenderPresent(ve);
-
-
-        // gioi han fps
-    frametime = SDL_GetTicks() - timestart;  // tinh time xu ly khunghinh
-
-    if (timefps > frametime) {
-        SDL_Delay(timefps - frametime);    // tg nghi cho du
+            // gioi han fps
+            frametime = SDL_GetTicks() - timestart;  // tinh time xu ly khung hinh
+            if (timefps > frametime) {
+                SDL_Delay(timefps - frametime);    // tg nghi cho du
+            }
+        }
     }
 
-    }
-}
-
-
-    SDL_DestroyRenderer(ve);    //giai phong tai nguyen
+    SDL_DestroyRenderer(ve);    // giai phong tai nguyen
     SDL_DestroyWindow(cuaso);
     IMG_Quit();
     SDL_Quit();
