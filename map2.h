@@ -1,5 +1,5 @@
-#ifndef MAP1_H
-#define MAP1_H
+#ifndef MAP2_H
+#define MAP2_H
 
 #include <SDL.h>
 #include <SDL2/SDL_image.h>
@@ -10,10 +10,10 @@ const int TILE_DEATH  = 7;
 
 class Player; // Khai báo sớm
 
-class Map1 {
+class Map2 {
 public:
-    Map1(SDL_Renderer* renderer);
-    ~Map1();
+    Map2(SDL_Renderer* renderer);
+    ~Map2();
 
     void render(SDL_Renderer* renderer, SDL_Rect camera);
 
@@ -25,20 +25,20 @@ public:
     int chieudoc() const;     // chiều dọc
 
     float birdTimer = 0.0f;   // thời gian tính frame chim đậu
-    bool birdFrame = false;// frame hiện tại chim đậu
+    bool birdFrame = false;   // frame hiện tại chim đậu
 
     float bird2Timer = 0.0f;
     bool bird2Frame = false;
 
     float treeTimer = 0.0f;   // thời gian tính frame cây
-    bool treeFrame = false;   // frame hiện tại (true = tile5, false = tile6)
+    bool treeFrame = false;    // frame hiện tại (true = tile5, false = tile6)
 
     void update(float deltaTime, Player& player); // cập nhật animation
 
-protected:
+private:
     std::vector<std::vector<int>> mapData;   // ma trận map
 
-    // Các texture tile
+    // Các texture tile (có thể dùng lại hoặc thêm tile mới)
     SDL_Texture* tile1;
     SDL_Texture* tile2;
     SDL_Texture* tile3;
@@ -68,8 +68,7 @@ protected:
     SDL_Texture* tile28;
     SDL_Texture* tile29;
 
-
-    SDL_Texture* nen;
+    SDL_Texture* nen;  // nền map2
     int tileSize;
 };
 

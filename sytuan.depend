@@ -474,13 +474,13 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1760028251 source:d:\làm game\sytuan\map1.cpp
+1760064160 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
 	"player.h"
 	<cmath>
 
-1760028131 d:\làm game\sytuan\map1.h
+1760077348 d:\làm game\sytuan\map1.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<vector>
@@ -499,4 +499,10 @@
 	"map1.h"
 
 1759235914 source:d:\làm game\sytuan\layer.cpp
+
+1760076872 source:d:\làm game\sytuan\map2.cpp
+	"map1.h"
+	<iostream>
+	"player.h"
+	<cmath>
 

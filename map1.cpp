@@ -12,7 +12,7 @@ int Map1::chieudoc() const {
 }
 
 Map1::Map1(SDL_Renderer* renderer) {  // constructor
-    nen = IMG_LoadTexture(renderer, "nen.png");
+    nen = IMG_LoadTexture(renderer, "maprungram.png");
     if (!nen) {
         std::cout << "Lỗi load nền: " << IMG_GetError() << std::endl;
     }
