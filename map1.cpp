@@ -44,9 +44,9 @@ Map1::Map1(SDL_Renderer* renderer) {  // constructor
     }
 
     // load tile textures
-    tile1 = IMG_LoadTexture(renderer, "assets/map/tile_0022.png"); // co
-    tile2 = IMG_LoadTexture(renderer, "assets/map/tile_0122.png"); // dat
-    tile3 = IMG_LoadTexture(renderer, "assets/map/tile_0121.png"); //
+    tile1 = IMG_LoadTexture(renderer, "assets/map/tile_0022.png");
+    tile2 = IMG_LoadTexture(renderer, "assets/map/tile_0122.png");
+    tile3 = IMG_LoadTexture(renderer, "assets/map/tile_0121.png");
     tile4 = IMG_LoadTexture(renderer, "assets/map/tile_0021.png");
     tile5 = IMG_LoadTexture(renderer, "assets/map/tile_0125.png");
     tile6 = IMG_LoadTexture(renderer, "assets/map/tile_0124.png");
@@ -68,16 +68,16 @@ Map1::Map1(SDL_Renderer* renderer) {  // constructor
     tile23 = IMG_LoadTexture(renderer, "assets/map/latraitren.png");
     tile24 = IMG_LoadTexture(renderer, "assets/map/laphaitren.png");
     tile25 = IMG_LoadTexture(renderer, "assets/map/muitenphai.png");
-    tile26 = IMG_LoadTexture(renderer, "assets/map/chim1.png"); // chim đậu
-    tile27 = IMG_LoadTexture(renderer, "assets/map/chim2.png"); // chim đậu
-    tile28 = IMG_LoadTexture(renderer, "assets/map/chim3.png"); // chim đậu
-    tile29 = IMG_LoadTexture(renderer, "assets/map/chim4.png"); // chim đậu
+    tile26 = IMG_LoadTexture(renderer, "assets/map/chim1.png");
+    tile27 = IMG_LoadTexture(renderer, "assets/map/chim2.png");
+    tile28 = IMG_LoadTexture(renderer, "assets/map/chim3.png");
+    tile29 = IMG_LoadTexture(renderer, "assets/map/chim4.png");
 
-    if (!tile1 || !tile2 || !tile3 || !tile4 || !tile5) {   // test load
-        std::cout << IMG_GetError() << std::endl;
+    if (!tile1 || !tile2 || !tile3 || !tile4||!tile5){   // test load
+        std::cout << IMG_GetError()<< std::endl;
     }
 
-    tileSize = 64; // mỗi ô 64x64 px
+    tileSize = 64;
 
     // Chim đậu animation
     birdFrame = false;
@@ -113,10 +113,10 @@ Map1::~Map1() {   // giải phóng RAM
     if (tile23) SDL_DestroyTexture(tile23);
     if (tile24) SDL_DestroyTexture(tile24);
     if (tile25) SDL_DestroyTexture(tile25);
-    if (tile26) SDL_DestroyTexture(tile26); // chim
-    if (tile27) SDL_DestroyTexture(tile27); // chim
-     if (tile28) SDL_DestroyTexture(tile28); // chim
-    if (tile29) SDL_DestroyTexture(tile29); // chim
+    if (tile26) SDL_DestroyTexture(tile26);
+    if (tile27) SDL_DestroyTexture(tile27);
+     if (tile28) SDL_DestroyTexture(tile28);
+    if (tile29) SDL_DestroyTexture(tile29);
     if (nen) SDL_DestroyTexture(nen);
 }
 
@@ -131,7 +131,7 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
             SDL_Rect src = {0, 0, tileSize, tileSize};
             SDL_Rect dst = {x * tileSize - camera.x, y * tileSize - camera.y, tileSize, tileSize};
 
-            SDL_Texture* current = nullptr; // khai báo biến chung
+            SDL_Texture* current = nullptr; // khai biến chung
 
             if (tileType == 1) SDL_RenderCopy(renderer, tile1, &src, &dst);
             else if (tileType == 2) SDL_RenderCopy(renderer, tile2, &src, &dst);
@@ -167,7 +167,7 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
                 current = birdFrame ? tile27 : tile26;
                 SDL_RenderCopy(renderer, current, &src, &dst);
             }
-            // animation chim 2 (mới)
+            // animation chim 2
         else if (tileType == 28 || tileType == 29) {
               SDL_Texture* bird2Current = bird2Frame ? tile29 : tile28;
            SDL_RenderCopy(renderer, bird2Current, &src, &dst);
@@ -175,6 +175,8 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
         }
     }
 }
+
+
 
 void Map1::update(float deltaTime, Player& player) {
     //  Animation chim đậu
@@ -197,4 +199,43 @@ void Map1::update(float deltaTime, Player& player) {
         treeTimer = 0.0f;
         treeFrame = !treeFrame;
     }
+    // 🔹 Kiểm tra nếu Player chạm tile 30 (chuyển map)
+    if (checkNextMapTile(&player)) {
+        printf("Player cham tile 30 — Chuyen sang map2!\n");
+        // T Gọi logic chuyển map thật ở đây
+
+    }
+}
+
+
+bool Map1::checkNextMapTile(Player* player){
+    // Kích thướctile
+     int tileSize = getTileSize();
+
+
+    int playerX = player->getX();
+    int playerY = player->getY();
+    int playerW = player->getWidth();
+    int playerH = player->getHeight();
+
+      // Xác định tile mà playerđang đứng hoặc chạm vào
+    int tileX = (playerX + playerW / 2) / tileSize;
+    int tileY = (playerY + playerH / 2) / tileSize;
+
+
+// Giới hạn tránh truy cập ngoài mảng
+    if (tileY < 0 || tileY >= chieudoc() || tileX < 0 || tileX >= chieungang())
+        return false;
+    int tileID = mapData[tileY][tileX];
+
+    // Debug xem player đang đứng đâu
+    printf("Player dang dung trentile: %d tai (%d,%d)\n", tileID, tileX, tileY);
+
+    // Nếu là tile 10 thì báo hiệu đổi map
+    if (tileID == TILE_NEXTMAP) {
+        return true;
+    }
+
+
+    return false;
 }

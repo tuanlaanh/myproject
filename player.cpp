@@ -96,6 +96,7 @@ void Player::update(float deltaTime, Map1& map) {
     velY += GRAVITY * deltaTime;
     if (velY > 3300.0f) velY = 3300.0f;
 
+
     float newX = posX + velX * deltaTime;
     float newY = posY + velY * deltaTime;
 
@@ -201,7 +202,10 @@ void Player::update(float deltaTime, Map1& map) {
 
 }
 
-
+void Player::setPosition(int x, int y) {
+    posX = x;
+    posY = y;
+}
 
 void Player::render(SDL_Renderer* renderer, SDL_Rect camera) {
     SDL_Rect renderQuad = {

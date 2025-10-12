@@ -17,14 +17,21 @@ public:
     void handleEvent(const SDL_Event& e);
     void update(float deltaTime, Map1& map);
     void render(SDL_Renderer* renderer, SDL_Rect camera);
+    void setPosition(int x, int y);//moi
+
 
     int getX() const { return (int)posX; }
     int getY() const { return (int)posY; }
+    SDL_Rect getDstRect() const { return dstRect; }
 
 
     float animTimer;
     int currentState;      // 0 = đứng, 1 = chạy, 2 = nhảy
     int currentFrame;      // 0 hoặc 1, để đổi frame chạy
+
+
+    int getWidth() const { return dstRect.w; }
+    int getHeight() const { return dstRect.h; }
 
 private:
     float posX, posY;
@@ -41,6 +48,7 @@ private:
     SDL_Texture* textureJump;   // texture nhảy / frame 2
     SDL_Rect srcRect;           // source rectangle
     SDL_Rect dstRect;           // destination rectangle
+
 
     bool leftPressed;           // phím trái
     bool rightPressed;          // phím phải

@@ -6,9 +6,10 @@
 #include <vector>
 #include "player.h"
 
-const int TILE_DEATH  = 7;
+class Player;
 
-class Player; // Khai báo sớm
+const int TILE_DEATH  = 7;
+const int TILE_NEXTMAP = 11; // tile dùng để chuyển sang map2
 
 class Map1 {
 public:
@@ -17,23 +18,26 @@ public:
 
     void render(SDL_Renderer* renderer, SDL_Rect camera);
 
-    // 2 getter để Player truy cập
+
     int getTileSize() const { return tileSize; }
-    const std::vector<std::vector<int>>& getMapData() const { return mapData;}
+    const std::vector<std::vector<int>>& getMapData() const { return mapData; }
 
     int chieungang() const;   // chiều ngang
     int chieudoc() const;     // chiều dọc
 
-    float birdTimer = 0.0f;   // thời gian tính frame chim đậu
-    bool birdFrame = false;// frame hiện tại chim đậu
+float birdTimer = 0.0f;   // thời gian tính frame chim đậu
+    bool birdFrame = false;   // frame hiện tại chim đậu
 
-    float bird2Timer = 0.0f;
+     float bird2Timer = 0.0f;
     bool bird2Frame = false;
 
-    float treeTimer = 0.0f;   // thời gian tính frame cây
-    bool treeFrame = false;   // frame hiện tại (true = tile5, false = tile6)
+    float treeTimer = 0.0f;
+    bool treeFrame = false;
 
-    void update(float deltaTime, Player& player); // cập nhật animation
+    void update(float deltaTime, Player& player); //cập nhật animation
+
+    // hàm kiểm tra tile để sang map2
+    bool checkNextMapTile(Player* player);
 
 protected:
     std::vector<std::vector<int>> mapData;   // ma trận map
@@ -68,9 +72,10 @@ protected:
     SDL_Texture* tile28;
     SDL_Texture* tile29;
 
-
     SDL_Texture* nen;
     int tileSize;
 };
+
+
 
 #endif

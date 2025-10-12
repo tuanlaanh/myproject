@@ -3,6 +3,7 @@
 #include <iostream>
 #include "menu.h"
 #include "map1.h"
+#include "map2.h"
 #include "player.h"
 
 #ifdef main   // dung de fix main k chay dc
@@ -47,6 +48,9 @@ int main(int argc, char* argv[]) {
         int frametime;    // time xu ly 1 khung hinh
 
         Uint32 lastTime = SDL_GetTicks(); // thoi gian truoc do
+      // --- thêm biến điều khiển map ---
+    int currentMap = 1;  // 1 = map1, 2 = map2
+    Map2 map2(ve);       // khởi tạo map2 sẵn để dùng sau
 
         while (running) {
             timestart = SDL_GetTicks();  // bat dau 1 khung hinh
@@ -60,29 +64,60 @@ int main(int argc, char* argv[]) {
 
             // tinh deltaTime
             Uint32 currentTime = SDL_GetTicks();
+
+
+
             float deltaTime = (currentTime - lastTime) / 1000.0f;
             lastTime = currentTime;
 
-            // update player
+             // --- cập nhật theo map hiện tại ---
+        if (currentMap == 1) {
             player.update(deltaTime, map); // tg giua 2 khung hinh
+            map.update(deltaTime, player);
 
-            // update map (animation + chim bay)
-            map.update(deltaTime,player);
+            // kiểm tra nếu chạm tile 30 -> chuyển sang map2
+            if (map.checkNextMapTile(&player)) {
+                currentMap = 2;
+                player.setPosition(100, 500); // spawn vị trí mới bên map2
+                continue; // bỏ qua frame còn lại, chuyển map ngay
+            }
+        }
+
+            else if (currentMap == 2) {
+            player.update(deltaTime, map2);
+            map2.update(deltaTime, player);
+
+            // nếu muốn có tile quay lại map1 thì thêm tương tự:
+            // if (map2.checkPrevMapTile(&player)) {
+            //     currentMap = 1;
+            //     player.setPosition(1200, 500);
+            //     continue;
+            // }
+        }
 
             camera.x = player.getX() - camera.w / 2; // dat cam cho nv giua map
             camera.y = player.getY() - camera.h / 2;
             if (camera.x < 0) { camera.x = 0; } // chan cam 0 ra ngoai map bien trai tren
             if (camera.y < 0) { camera.y = 0; }  // chan cam 0 ra ngoai map
-            if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }  // ngat cam
-            if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }   // bien phai duoi
-
+            if (currentMap == 1) {
+    if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }
+    if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }
+} else {
+    if (camera.x > map2.chieungang() - camera.w) { camera.x = map2.chieungang() - camera.w; }
+    if (camera.y > map2.chieudoc() - camera.h) { camera.y = map2.chieudoc() - camera.h; }
+}
             // --- ve man hinh ---
             SDL_SetRenderDrawColor(ve, 0, 0, 0, 255); // xóa màn hình
             SDL_RenderClear(ve);
 
             // ve map va player
-            map.render(ve, camera);
-            player.render(ve, camera);
+            if (currentMap == 1)
+    map.render(ve, camera);
+else
+    map2.render(ve, camera);
+
+player.render(ve, camera);
+
 
             SDL_RenderPresent(ve); // hien thi khung hinh
 
