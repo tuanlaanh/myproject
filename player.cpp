@@ -2,13 +2,14 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include "map1.h"
+#include "map2.h"
 #include <cmath>
 
 
 //Constan
 const float MOVE_SPEED = 300.0f;
 const float GRAVITY    = 3000.0f;
-const float JUMP_FORCE = -700.0f;
+const float JUMP_FORCE = -750.0f;
 
 
 
@@ -112,11 +113,23 @@ void Player::update(float deltaTime, Map1& map) {
 
     for (int tx = tileX1; tx <= tileX2; ++tx) {
         int currentTile = map.getMapData()[tileY][tx];
-        if (currentTile == TILE_DEATH) {
+        if (currentTile == TILE_DEATH|| currentTile == TILE_TRAP ) {
             die();      // quay về spawn
             return;     // dừng update tiếp
         }
     }
+
+
+//  KIỂM TRA CHẾT (BẪY 2 — CHẠM DƯỚI TILE TRÊN ĐẦU)
+int tileYTop = (int)(newY) / tileSize;
+
+for (int tx = tileX1; tx <= tileX2; ++tx) {
+    int currentTile = map.getMapData()[tileYTop][tx];
+    if (currentTile == TILE_TRAP2) {
+        die();  // quay về spawn
+        return;
+    }
+}
 
 
 
@@ -133,7 +146,7 @@ void Player::update(float deltaTime, Map1& map) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27))
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 )
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)posY, dstRect.w, dstRect.h};
@@ -163,7 +176,7 @@ void Player::update(float deltaTime, Map1& map) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27))
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)newY, dstRect.w, dstRect.h};

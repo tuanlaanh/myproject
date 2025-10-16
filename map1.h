@@ -9,7 +9,9 @@
 class Player;
 
 const int TILE_DEATH  = 7;
-const int TILE_NEXTMAP = 11; // tile dùng để chuyển sang map2
+const int TILE_NEXTMAP = 11;
+const int TILE_TRAP = 31;
+const int TILE_TRAP2 = 32;
 
 class Map1 {
 public:

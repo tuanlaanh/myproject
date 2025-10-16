@@ -475,23 +475,24 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1760295109 source:d:\làm game\sytuan\map1.cpp
+1760613512 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
 	"player.h"
 	<cmath>
 
-1760294881 d:\làm game\sytuan\map1.h
+1760436752 d:\làm game\sytuan\map1.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<vector>
 	"player.h"
 
-1760295109 source:d:\làm game\sytuan\player.cpp
+1760603756 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
 	"map1.h"
+	"map2.h"
 	<cmath>
 
 1760285301 d:\làm game\sytuan\player.h
@@ -501,12 +502,14 @@
 
 1759235914 source:d:\làm game\sytuan\layer.cpp
 
-1760294881 source:d:\làm game\sytuan\map2.cpp
-	"map1.h"
+1760614107 source:d:\làm game\sytuan\map2.cpp
+	"map2.h"
 	<iostream>
 	"player.h"
 	<algorithm>
 
-1760294881 d:\làm game\sytuan\map2.h
+1760602053 d:\làm game\sytuan\map2.h
 	"map1.h"
+
+1760550263 source:d:\làm game\sytuan\enemy.cpp
 
