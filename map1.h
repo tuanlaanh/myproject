@@ -18,7 +18,7 @@ public:
     Map1(SDL_Renderer* renderer);
     ~Map1();
 
-    void render(SDL_Renderer* renderer, SDL_Rect camera);
+   virtual  void render(SDL_Renderer* renderer, SDL_Rect camera);
 
 
     int getTileSize() const { return tileSize; }

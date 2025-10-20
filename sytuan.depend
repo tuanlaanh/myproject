@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1760283455 source:d:\làm game\sytuan\main.cpp
+1760800081 source:d:\làm game\sytuan\main.cpp
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -7,6 +7,7 @@
 	"map1.h"
 	"map2.h"
 	"player.h"
+	"enemy.h"
 	<windows.h>
 
 1756738932 d:\sdl2-2.32.10\x86_64-w64-mingw32\include\sdl2\sdl.h
@@ -481,13 +482,13 @@
 	"player.h"
 	<cmath>
 
-1760436752 d:\làm game\sytuan\map1.h
+1760629615 d:\làm game\sytuan\map1.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<vector>
 	"player.h"
 
-1760603756 source:d:\làm game\sytuan\player.cpp
+1760644867 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -495,21 +496,42 @@
 	"map2.h"
 	<cmath>
 
-1760285301 d:\làm game\sytuan\player.h
+1760640386 d:\làm game\sytuan\player.h
 	<SDL.h>
 	<string>
 	"map1.h"
 
 1759235914 source:d:\làm game\sytuan\layer.cpp
 
-1760614107 source:d:\làm game\sytuan\map2.cpp
+1760799404 source:d:\làm game\sytuan\map2.cpp
 	"map2.h"
 	<iostream>
 	"player.h"
+	"enemy.h"
+	"enemy2.h"
 	<algorithm>
 
-1760602053 d:\làm game\sytuan\map2.h
+1760798834 d:\làm game\sytuan\map2.h
 	"map1.h"
+	"enemy.h"
+	"enemy2.h"
 
-1760550263 source:d:\làm game\sytuan\enemy.cpp
+1760798019 source:d:\làm game\sytuan\enemy.cpp
+	"enemy.h"
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_log.h>
+
+1760636527 d:\làm game\sytuan\enemy.h
+	<SDL.h>
+	<SDL2/SDL_image.h>
+
+1760798102 d:\làm game\sytuan\enemy2.h
+	<SDL.h>
+
+1760799634 source:d:\làm game\sytuan\enemy2.cpp
+	"enemy2.h"
+	<SDL2/SDL_image.h>
+	<iostream>
+
+1760801392 source:d:\làm game\sytuan\map3.cpp
 

@@ -5,6 +5,7 @@
 #include "map1.h"
 #include "map2.h"
 #include "player.h"
+#include "enemy.h"
 
 #ifdef main   // dung de fix main k chay dc
 #undef main
@@ -60,6 +61,31 @@ int main(int argc, char* argv[]) {
                     running = false;
                 }
                 player.handleEvent(e); // xu ly phim dieu khien player
+
+
+        // 📌 Phím tắt chuyển map nhanh
+        if (e.type == SDL_KEYDOWN) {
+            switch (e.key.keysym.sym) {
+                case SDLK_1: // phím 1 -> Map1
+                    currentMap = 1;
+                    player.setPosition(100, 500); // vị trí spawn trên map1
+                    std::cout << "Chuyen nhanh sang Map1\n";
+                    break;
+
+                case SDLK_2: // phím 2 -> Map2
+                    currentMap = 2;
+                    player.setPosition(100, 500); // vị trí spawn trên map2
+                    std::cout << "Chuyen nhanh sang Map2\n";
+                    break;
+
+                // có thể thêm phím 3 nếu sau này có map3
+                // case SDLK_3:
+                //     currentMap = 3;
+                //     player.setPosition(100, 500);
+                //     std::cout << "Chuyen nhanh sang Map3\n";
+                //     break;
+            }
+        }
             }
 
             // tinh deltaTime
@@ -87,6 +113,9 @@ int main(int argc, char* argv[]) {
             player.update(deltaTime, map2);
             map2.update(deltaTime, player);
 
+
+     // 👉 thêm dòng này để enemy hoạt động trong map2
+    map2.updateEnemy(deltaTime,player);
             // nếu muốn có tile quay lại map1 thì thêm tương tự:
             // if (map2.checkPrevMapTile(&player)) {
             //     currentMap = 1;

@@ -11,6 +11,11 @@ class Map1; // Khai báo sớm để compiler biết Map1 là một class
 
 class Player {
 public:
+
+
+    void setAlive(bool a) { alive = a; }
+bool isAlive() const { return alive; }
+    SDL_Rect getRect() const { return dstRect; }
     Player(SDL_Renderer* renderer, float x, float y);
     ~Player();
 
@@ -32,8 +37,15 @@ public:
 
     int getWidth() const { return dstRect.w; }
     int getHeight() const { return dstRect.h; }
+    int getSpawnX() const { return (int)spawnX; }
+    int getSpawnY() const { return (int)spawnY; }
 
 private:
+
+
+    bool alive = true;
+
+
     float posX, posY;
     float velX, velY;
     bool onGround;

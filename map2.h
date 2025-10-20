@@ -1,12 +1,23 @@
 #ifndef MAP2_H
 #define MAP2_H
 
-#include "map1.h"   //Kế thừa từ Map1
+#include "map1.h"
+#include "enemy.h"
+#include "enemy2.h"
 
 class Map2 : public Map1 {
 public:
 
+// Animation hoa
+bool hoaFrame;      // hiện frame nào
+float hoaTimer;      // bộ đếm thời gian
+float hoaFrameTime;  // thời gian mỗi frame
 
+
+Enemy enemy1;
+    void render(SDL_Renderer* renderer, SDL_Rect camera) override;
+
+    void updateEnemy(float deltaTime, Player& player); // thêm hàm cập nhật quái riêng map2
 
 
 
@@ -16,11 +27,15 @@ public:
     //các hàm riêng của map2
     int chieungang() const;
     int chieudoc() const;
-    void render(SDL_Renderer* renderer, SDL_Rect camera);
+
+    Enemy2 enemy2;
+     Enemy2 doi2;
 
 
 
 private:
+
+
 
   SDL_Texture* tile30;
   SDL_Texture* tile31;
@@ -40,6 +55,7 @@ private:
   SDL_Texture* tile45;
   SDL_Texture* tile46;
   SDL_Texture* tile47;
+  SDL_Texture* tile48;
 
 
 

@@ -55,11 +55,15 @@
 		</ExtraCommands>
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
+		<Unit filename="enemy2.cpp" />
+		<Unit filename="enemy2.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="map1.cpp" />
 		<Unit filename="map1.h" />
 		<Unit filename="map2.cpp" />
 		<Unit filename="map2.h" />
+		<Unit filename="map3.cpp" />
+		<Unit filename="map3.h" />
 		<Unit filename="menu.cpp" />
 		<Unit filename="menu.h" />
 		<Unit filename="player.cpp" />

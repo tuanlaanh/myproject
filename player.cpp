@@ -146,7 +146,7 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 )
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 &&tileType != 48)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)posY, dstRect.w, dstRect.h};
@@ -176,7 +176,7 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45)
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45&&tileType != 48)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)newY, dstRect.w, dstRect.h};
