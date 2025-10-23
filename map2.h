@@ -13,6 +13,8 @@ bool hoaFrame;      // hiện frame nào
 float hoaTimer;      // bộ đếm thời gian
 float hoaFrameTime;  // thời gian mỗi frame
 
+bool checkNextMapTile(Player* player);
+
 
 Enemy enemy1;
     void render(SDL_Renderer* renderer, SDL_Rect camera) override;

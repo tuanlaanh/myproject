@@ -1,13 +1,15 @@
 # depslib dependency file v1.0
-1760800081 source:d:\làm game\sytuan\main.cpp
+1761142935 source:d:\làm game\sytuan\main.cpp
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
 	"menu.h"
 	"map1.h"
 	"map2.h"
+	"map3.h"
 	"player.h"
 	"enemy.h"
+	"map4.h"
 	<windows.h>
 
 1756738932 d:\sdl2-2.32.10\x86_64-w64-mingw32\include\sdl2\sdl.h
@@ -488,7 +490,7 @@
 	<vector>
 	"player.h"
 
-1760644867 source:d:\làm game\sytuan\player.cpp
+1761072549 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -503,7 +505,7 @@
 
 1759235914 source:d:\làm game\sytuan\layer.cpp
 
-1760799404 source:d:\làm game\sytuan\map2.cpp
+1761077033 source:d:\làm game\sytuan\map2.cpp
 	"map2.h"
 	<iostream>
 	"player.h"
@@ -511,17 +513,18 @@
 	"enemy2.h"
 	<algorithm>
 
-1760798834 d:\làm game\sytuan\map2.h
+1761075905 d:\làm game\sytuan\map2.h
 	"map1.h"
 	"enemy.h"
 	"enemy2.h"
 
-1760798019 source:d:\làm game\sytuan\enemy.cpp
+1761074249 source:d:\làm game\sytuan\enemy.cpp
 	"enemy.h"
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_log.h>
+	<iostream>
 
-1760636527 d:\làm game\sytuan\enemy.h
+1761074115 d:\làm game\sytuan\enemy.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 
@@ -533,5 +536,43 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1760801392 source:d:\làm game\sytuan\map3.cpp
+1761075481 source:d:\làm game\sytuan\map3.cpp
+	"map3.h"
+	<iostream>
+	"player.h"
+	"enemy.h"
+	"enemy2.h"
+	<algorithm>
+
+1761073681 d:\làm game\sytuan\map3.h
+	"map1.h"
+	"enemy.h"
+	"enemy2.h"
+	"enemy3.h"
+	<vector>
+	<SDL.h>
+	<SDL2/SDL_image.h>
+
+1761059996 d:\làm game\sytuan\box.h
+	<SDL.h>
+	<SDL2/SDL_image.h>
+	"player.h"
+
+1761060163 source:d:\làm game\sytuan\box.cpp
+	"box.h"
+	<iostream>
+
+1761073681 d:\làm game\sytuan\enemy3.h
+	"enemy.h"
+
+1761074151 source:d:\làm game\sytuan\enemy3.cpp
+	"enemy3.h"
+
+1761148794 source:d:\làm game\sytuan\map4.cpp
+	"map4.h"
+	<iostream>
+
+1761148547 d:\làm game\sytuan\map4.h
+	<SDL2/SDL_image.h>
+	"map1.h"
 

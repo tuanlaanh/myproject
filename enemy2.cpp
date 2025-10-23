@@ -9,7 +9,7 @@ bool Enemy2::checkCollision(const SDL_Rect& rect)
 
 Enemy2::Enemy2(SDL_Renderer* renderer, int x, int y, int rangeTiles)
 {
-    // Nạp đủ 3 ảnh dơi
+    // Nạp 3 ảnh dơi
     texture1 = IMG_LoadTexture(renderer, "assets/char/doi1.png");
     texture2 = IMG_LoadTexture(renderer, "assets/char/doi2.png");
     texture3 = IMG_LoadTexture(renderer, "assets/char/doi3.png");
@@ -38,7 +38,7 @@ Enemy2::~Enemy2()
 
 void Enemy2::update(float deltaTime)
 {
-    // --- Di chuyển lên xuống ---
+    // Di chuyển lên xuống
     dstRect.y -= static_cast<int>(speed * direction * deltaTime);
 
     if (dstRect.y < startY - moveRange)
@@ -46,26 +46,25 @@ void Enemy2::update(float deltaTime)
     else if (dstRect.y > startY + moveRange)
         direction = 1;
 
-    // --- Animation ---
+    // Animation
     animTimer += deltaTime;
     if (animTimer >= 0.1f) {
         animTimer = 0;
         frameIndex = (frameIndex + 1) % 3;
-
         if (frameIndex == 0)
-            currentTexture = texture1;
-        else if (frameIndex == 1)
-            currentTexture = texture2;
+            currentTexture =texture1;
+        else if (frameIndex ==1)
+            currentTexture =texture2;
         else
-            currentTexture = texture3;
+            currentTexture =texture3;
     }
 }
 
 void Enemy2::render(SDL_Renderer* renderer, SDL_Rect camera)
 {
-    SDL_Rect renderRect = {
-        dstRect.x - camera.x,
-        dstRect.y - camera.y,
+    SDL_Rect renderRect ={
+        dstRect.x -camera.x,
+        dstRect.y -camera.y,
         dstRect.w,
         dstRect.h
     };

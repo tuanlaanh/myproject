@@ -4,8 +4,10 @@
 #include "menu.h"
 #include "map1.h"
 #include "map2.h"
+#include "map3.h"     // 👉 THÊM FILE MAP3
 #include "player.h"
 #include "enemy.h"
+#include "map4.h"
 
 #ifdef main   // dung de fix main k chay dc
 #undef main
@@ -35,6 +37,9 @@ int main(int argc, char* argv[]) {
         std::cout << "yo";
 
         Map1 map(ve);
+        Map2 map2(ve);
+        Map3 map3(ve);
+        Map4 map4(ve);
         Player player(ve, 300, 500); // toa do spon player
         SDL_Rect camera = {0, 0, 1280, 720};
 
@@ -49,9 +54,9 @@ int main(int argc, char* argv[]) {
         int frametime;    // time xu ly 1 khung hinh
 
         Uint32 lastTime = SDL_GetTicks(); // thoi gian truoc do
-      // --- thêm biến điều khiển map ---
-    int currentMap = 1;  // 1 = map1, 2 = map2
-    Map2 map2(ve);       // khởi tạo map2 sẵn để dùng sau
+
+        // --- thêm biến điều khiển map ---
+        int currentMap = 1;  // 1 = map1, 2 = map2, 3 = map3
 
         while (running) {
             timestart = SDL_GetTicks();  // bat dau 1 khung hinh
@@ -62,103 +67,145 @@ int main(int argc, char* argv[]) {
                 }
                 player.handleEvent(e); // xu ly phim dieu khien player
 
+                // 📌 Phím tắt chuyển map nhanh
+                if (e.type == SDL_KEYDOWN) {
+                    switch (e.key.keysym.sym) {
+                        case SDLK_1: // phím 1 -> Map1
+                            currentMap = 1;
+                            player.setPosition(100, 500); // vị trí spawn trên map1
+                            std::cout << "Chuyen nhanh sang Map1\n";
+                            break;
 
-        // 📌 Phím tắt chuyển map nhanh
-        if (e.type == SDL_KEYDOWN) {
-            switch (e.key.keysym.sym) {
-                case SDLK_1: // phím 1 -> Map1
-                    currentMap = 1;
-                    player.setPosition(100, 500); // vị trí spawn trên map1
-                    std::cout << "Chuyen nhanh sang Map1\n";
-                    break;
+                        case SDLK_2: // phím 2 -> Map2
+                            currentMap = 2;
+                            player.setPosition(3400, 500); // vị trí spawn trên map2
+                            std::cout << "Chuyen nhanh sang Map2\n";
+                            break;
 
-                case SDLK_2: // phím 2 -> Map2
-                    currentMap = 2;
-                    player.setPosition(100, 500); // vị trí spawn trên map2
-                    std::cout << "Chuyen nhanh sang Map2\n";
-                    break;
+                        case SDLK_3: //  phím 3 -> Map3
+                            currentMap = 3;
+                            player.setPosition(100, 2100); // vị trí spawn trên map3
+                            std::cout << "Chuyen nhanh sang Map3\n";
+                            break;
 
-                // có thể thêm phím 3 nếu sau này có map3
-                // case SDLK_3:
-                //     currentMap = 3;
-                //     player.setPosition(100, 500);
-                //     std::cout << "Chuyen nhanh sang Map3\n";
-                //     break;
-            }
-        }
+                        case SDLK_4: // phím 4 -> Map4
+                          currentMap = 4;
+                            player.setPosition(100, 500); // vị trí spawn map4
+                            std::cout << "Chuyen nhanh sang Map4\n";
+                            break;
+                    }
+                }
             }
 
             // tinh deltaTime
             Uint32 currentTime = SDL_GetTicks();
-
-
-
             float deltaTime = (currentTime - lastTime) / 1000.0f;
             lastTime = currentTime;
 
-             // --- cập nhật theo map hiện tại ---
-        if (currentMap == 1) {
-            player.update(deltaTime, map); // tg giua 2 khung hinh
-            map.update(deltaTime, player);
+            // --- cập nhật theo map hiện tại ---
+            if (currentMap == 1) {
+                player.update(deltaTime, map); // tg giua 2 khung hinh
+                map.update(deltaTime, player);
 
-            // kiểm tra nếu chạm tile 30 -> chuyển sang map2
-            if (map.checkNextMapTile(&player)) {
-                currentMap = 2;
-                player.setPosition(100, 500); // spawn vị trí mới bên map2
-                continue; // bỏ qua frame còn lại, chuyển map ngay
+                // kiểm tra nếu chạm tile chuyển sang map2
+                if (map.checkNextMapTile(&player)) {
+                    currentMap = 2;
+                    player.setPosition(100, 500); // spawn vị trí mới bên map2
+                    continue; // bỏ qua frame còn lại, chuyển map ngay
+                }
             }
-        }
 
             else if (currentMap == 2) {
-            player.update(deltaTime, map2);
-            map2.update(deltaTime, player);
+                player.update(deltaTime, map2);
+                map2.update(deltaTime, player);
+                map2.updateEnemy(deltaTime, player); // 👉 cập nhật enemy map2
 
+                // Kiểm tra tile chuyển từ map2 sang map3
+       if (map2.checkNextMapTile(&player)) {
+         currentMap = 3;
+        player.setPosition(200, 2100); // vị trí spawn map3
+        continue;
+    }
+            }
 
-     // 👉 thêm dòng này để enemy hoạt động trong map2
-    map2.updateEnemy(deltaTime,player);
-            // nếu muốn có tile quay lại map1 thì thêm tương tự:
-            // if (map2.checkPrevMapTile(&player)) {
-            //     currentMap = 1;
-            //     player.setPosition(1200, 500);
-            //     continue;
-            // }
-        }
+            else if (currentMap == 3) { // THÊM
+                player.update(deltaTime, map3);
+                map3.update(deltaTime, player);
+                map3.updateEnemy(deltaTime, player); // cập nhật quái map3
 
-            camera.x = player.getX() - camera.w / 2; // dat cam cho nv giua map
-            camera.y = player.getY() - camera.h / 2;
-            if (camera.x < 0) { camera.x = 0; } // chan cam 0 ra ngoai map bien trai tren
-            if (camera.y < 0) { camera.y = 0; }  // chan cam 0 ra ngoai map
-            if (currentMap == 1) {
-    if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }
-    if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }
-} else {
-    if (camera.x > map2.chieungang() - camera.w) { camera.x = map2.chieungang() - camera.w; }
-    if (camera.y > map2.chieudoc() - camera.h) { camera.y = map2.chieudoc() - camera.h; }
+                // kiểm tra nếu chạm tile quay lại map2
+                if (map3.checkPrevMapTile(&player)) {
+                    currentMap = 2;
+                    player.setPosition(100, 500);
+                    continue;
+                }
+            }
+
+             else if (currentMap == 4) { // THÊM PHẦN MAP4
+             player.update(deltaTime, map4);
+              map4.update(deltaTime, player);
+               map4.updateEnemy(deltaTime, player); // nếu có quái thì thêm, không thì bỏ
+
+               // kiểm tra nếu chạm tile quay lại map3
+               if (map4.checkPrevMapTile(&player)) {
+                   currentMap = 3;
+                   player.setPosition(200, 2100); // ví dụ vị trí spawn map3
+                   continue;
+    }
 }
+
+            // --- cập nhật camera ---
+            camera.x = player.getX() - camera.w / 2;
+            camera.y = player.getY() - camera.h / 2;
+
+            if (camera.x < 0) { camera.x = 0; }
+            if (camera.y < 0) { camera.y = 0; }
+
+            // giới hạn camera theo map hiện tại
+            if (currentMap == 1) {
+                if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }
+                if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }
+            }
+            else if (currentMap == 2) {
+                if (camera.x > map2.chieungang() - camera.w) { camera.x = map2.chieungang() - camera.w; }
+                if (camera.y > map2.chieudoc() - camera.h) { camera.y = map2.chieudoc() - camera.h; }
+            }
+            else if (currentMap == 3) { // 👉 THÊM GIỚI HẠN CAMERA MAP3
+                if (camera.x > map3.chieungang() - camera.w) { camera.x = map3.chieungang() - camera.w; }
+                if (camera.y > map3.chieudoc() - camera.h) { camera.y = map3.chieudoc() - camera.h; }
+            }
+            else if (currentMap == 4) { // 👉 GIỚI HẠN CAMERA MAP4
+           if (camera.x > map4.chieungang() - camera.w) { camera.x = map4.chieungang() - camera.w; }
+            if (camera.y > map4.chieudoc() - camera.h) { camera.y = map4.chieudoc() - camera.h; }
+          }
+
             // --- ve man hinh ---
-            SDL_SetRenderDrawColor(ve, 0, 0, 0, 255); // xóa màn hình
+            SDL_SetRenderDrawColor(ve, 0, 0, 0, 255);
             SDL_RenderClear(ve);
 
             // ve map va player
             if (currentMap == 1)
-    map.render(ve, camera);
-else
-    map2.render(ve, camera);
+                map.render(ve, camera);
+            else if (currentMap == 2)
+                map2.render(ve, camera);
+            else if (currentMap == 3) // thêm render map3
+                map3.render(ve, camera);
+            else if (currentMap == 4) //dd
+            map4.render(ve, camera);
 
-player.render(ve, camera);
-
+            player.render(ve, camera);
 
             SDL_RenderPresent(ve); // hien thi khung hinh
 
             // gioi han fps
-            frametime = SDL_GetTicks() - timestart;  // tinh time xu ly khung hinh
+            frametime = SDL_GetTicks() - timestart;
             if (timefps > frametime) {
-                SDL_Delay(timefps - frametime);    // tg nghi cho du
+                SDL_Delay(timefps - frametime);
             }
         }
     }
 
-    SDL_DestroyRenderer(ve);    // giai phong tai nguyen
+    SDL_DestroyRenderer(ve);
     SDL_DestroyWindow(cuaso);
     IMG_Quit();
     SDL_Quit();

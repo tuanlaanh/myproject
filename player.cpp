@@ -146,7 +146,8 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 &&tileType != 48)
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 &&tileType !=48
+                &&tileType != 56)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)posY, dstRect.w, dstRect.h};
@@ -176,7 +177,8 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
-                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45&&tileType != 48)
+                (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45&&tileType != 48
+                &&tileType != 56)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)newY, dstRect.w, dstRect.h};
@@ -191,8 +193,18 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
                     } else if (velY < 0) {
                         // chạm trần
                         newY = tileRect.y + tileSize;
-                        velY = 0;
-                    }
+                        velY = 0;}
+
+                        if (tileType == 50) { // tile bệ bật nhảy
+        velY = -1200.0f; // lực nhảy, chỉnh tùy ý
+        onGround = false; // để player bay lên
+                        }
+         if (tileType == 51) { // tile bệ bật nhảy
+        velY = -700.0f; // lực nhảy, chỉnh tùy ý
+        onGround = false; // để player bay lên
+    }
+
+
                 }
             }
         }

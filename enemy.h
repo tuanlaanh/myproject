@@ -4,26 +4,31 @@
 
 class Enemy {
 public:
-    // Khởi tạo quái, truyền renderer, vị trí (x, y) và số tile muốn di chuyển
+
     Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles);
     ~Enemy();
 
-    void update(float deltaTime);                     // cập nhật vị trí + animation
-    void render(SDL_Renderer* renderer, SDL_Rect camera);  // vẽ quái
-    bool checkCollision(const SDL_Rect& playerRect);  // kiểm tra va chạm với player
+    Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles,
+          const char* img1, const char* img2);
+    void update(float deltaTime);
+    void render(SDL_Renderer* renderer, SDL_Rect camera);
+    bool checkCollision(const SDL_Rect& playerRect);
 
-    SDL_Rect getRect() const { return dstRect; }      // lấy khung của quái
+    SDL_Rect getRect() const { return dstRect; }
+
+    void setSpeed(float s) { speed = s; }
+    float getSpeed() const { return speed; }
 
 private:
-    SDL_Texture* texture1;       // ảnh 1
-    SDL_Texture* texture2;       // ảnh 2
-    SDL_Texture* currentTexture; // ảnh hiện tại đang hiển thị
+    SDL_Texture* texture1;
+    SDL_Texture* texture2;
+    SDL_Texture* currentTexture;
 
-    SDL_Rect dstRect;            // vị trí và kích thước quái
+    SDL_Rect dstRect;
 
-    int startX;                  // vị trí bắt đầu
-    int moveRange;               // phạm vi di chuyển (tính bằng pixel)
-    float speed;                 // tốc độ di chuyển
-    int direction;               // hướng: 1 = phải, -1 = trái
-    float animTimer;             // bộ đếm để đổi hình
+    int startX;
+    int moveRange;
+    float speed;
+    int direction;
+    float animTimer;
 };
