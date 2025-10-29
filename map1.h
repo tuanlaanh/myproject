@@ -24,11 +24,11 @@ public:
     int getTileSize() const { return tileSize; }
     const std::vector<std::vector<int>>& getMapData() const { return mapData; }
 
-    int chieungang() const;   // chiều ngang
-    int chieudoc() const;     // chiều dọc
+    int chieungang() const;
+    int chieudoc() const;
 
-float birdTimer = 0.0f;   // thời gian tính frame chim đậu
-    bool birdFrame = false;   // frame hiện tại chim đậu
+float birdTimer = 0.0f;
+    bool birdFrame = false;
 
      float bird2Timer = 0.0f;
     bool bird2Frame = false;
@@ -36,15 +36,15 @@ float birdTimer = 0.0f;   // thời gian tính frame chim đậu
     float treeTimer = 0.0f;
     bool treeFrame = false;
 
-    void update(float deltaTime, Player& player); //cập nhật animation
+    void update(float deltaTime, Player& player);
 
-    // hàm kiểm tra tile để sang map2
+
     bool checkNextMapTile(Player* player);
 
 protected:
-    std::vector<std::vector<int>> mapData;   // ma trận map
+    std::vector<std::vector<int>> mapData;
 
-    // Các texture tile
+
     SDL_Texture* tile1;
     SDL_Texture* tile2;
     SDL_Texture* tile3;

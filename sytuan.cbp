@@ -14,12 +14,15 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="D:/SDL2_mixer-2.8.1/x86_64-w64-mingw32/include/SDL2" />
 				</Compiler>
 				<Linker>
 					<Add option="-mconsole" />
 					<Add library="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib/libSDL2main.a" />
 					<Add library="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib/libSDL2.a" />
+					<Add library="D:/SDL2_mixer-2.8.1/x86_64-w64-mingw32/lib/libSDL2_mixer.dll.a" />
 					<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib" />
+					<Add directory="D:/SDL2_mixer-2.8.1/x86_64-w64-mingw32/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -42,17 +45,22 @@
 			<Add option="-Wall" />
 			<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/include" />
 			<Add directory="D:/SDL2_image-2.6.1/x86_64-w64-mingw32/include" />
+			<Add directory="D:/SDL2_ttf-2.24.0/x86_64-w64-mingw32/include" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL2main" />
 			<Add library="SDL2" />
 			<Add library="SDL2_image" />
+			<Add library="SDL2_ttf" />
 			<Add directory="D:/SDL2-2.32.10/x86_64-w64-mingw32/lib" />
 			<Add directory="D:/SDL2_image-2.6.1/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<ExtraCommands>
 			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
 		</ExtraCommands>
+		<Unit filename="boss.cpp" />
+		<Unit filename="boss.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
 		<Unit filename="enemy2.cpp" />

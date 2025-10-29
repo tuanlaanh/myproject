@@ -3,68 +3,67 @@
 
 #include <SDL.h>
 #include <string>
-#include "map1.h"
 
-
-
-class Map1; // Khai báo sớm để compiler biết Map1 là một class
+class Map1;
 
 class Player {
 public:
-
-
-    void setAlive(bool a) { alive = a; }
-bool isAlive() const { return alive; }
-    SDL_Rect getRect() const { return dstRect; }
     Player(SDL_Renderer* renderer, float x, float y);
     ~Player();
 
     void handleEvent(const SDL_Event& e);
     void update(float deltaTime, Map1& map);
     void render(SDL_Renderer* renderer, SDL_Rect camera);
-    void setPosition(int x, int y);//moi
+    void setPosition(int x, int y);
 
+    float getVelY() const;
+    void bounce();
+    void resetToSpawn();
 
+    SDL_Rect getRect() const { return dstRect; }
     int getX() const { return (int)posX; }
     int getY() const { return (int)posY; }
-    SDL_Rect getDstRect() const { return dstRect; }
-
-
-    float animTimer;
-    int currentState;      // 0 = đứng, 1 = chạy, 2 = nhảy
-    int currentFrame;      // 0 hoặc 1, để đổi frame chạy
-
-
     int getWidth() const { return dstRect.w; }
     int getHeight() const { return dstRect.h; }
     int getSpawnX() const { return (int)spawnX; }
     int getSpawnY() const { return (int)spawnY; }
 
-private:
+    bool isAlive() const { return alive; }
+    void setAlive(bool a) { alive = a; }
 
+    bool isInvincible() const { return invincibleTime > 0.0f; }
+    void setInvincible(float t) { invincibleTime = t; }
+    void updateInvincible(float deltaTime) {
+        if (invincibleTime > 0.0f) invincibleTime -= deltaTime;
+        if (invincibleTime < 0.0f) invincibleTime = 0.0f;
+    }
+
+    float animTimer;
+    int currentState;
+    int currentFrame;
+
+private:
+    void die();
 
     bool alive = true;
-
-
     float posX, posY;
     float velX, velY;
     bool onGround;
     int jumpCount;
     const int MAX_JUMP = 2;
 
-    float spawnX, spawnY; // tọa độ spawn
-     void die(); // chết
+    float spawnX, spawnY;
 
+    SDL_Texture* textureIdle;
+    SDL_Texture* textureJump;
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
 
-    SDL_Texture* textureIdle;   // texture đứng / frame 1
-    SDL_Texture* textureJump;   // texture nhảy / frame 2
-    SDL_Rect srcRect;           // source rectangle
-    SDL_Rect dstRect;           // destination rectangle
+    float invincibleTime = 0.0f;
 
-
-    bool leftPressed;           // phím trái
-    bool rightPressed;          // phím phải
-    bool movingX;               // đang chạy ngang
+    bool leftPressed;
+    bool rightPressed;
+    bool movingX;
 };
 
 #endif

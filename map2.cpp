@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "enemy2.h"
 #include <algorithm>
+#include <SDL_mixer.h>
 
 
 int Map2::chieungang() const {
@@ -62,7 +63,7 @@ Map2::Map2(SDL_Renderer* renderer)
         {9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,16,15,0,0,0,0,0,0,0,0,43,0,0,0,0,0,0,0,0,0,43,0,0,0,0,0,0,0,0,0,0,0,6,3,2},
         {8,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,0,0,0,0,0,0,0,41,40,45,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,4,9,2},
         {8,6,0,0,4,9,0,0,0,0,33,0,0,0,0,0,33,0,0,0,0,0,0,48,48,4,1,1,1,1,1,1,1,1,1,1,1,1,9,0,0,0,0,41,42,45,0,0,0,0,0,0,0,0,0,43,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,10,0,3,2,2},
-        {1,1,1,1,2,8,0,0,0,0,34,0,0,0,0,0,34,0,0,0,0,0,4,1,1,9,2,2,2,2,2,2,2,2,2,2,2,2,8,30,0,48,48,0,0,44,42,40,46,0,0,0,0,0,0,44,40,46,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,30,31,11,48,3,2,2},
+        {1,1,1,1,2,8,0,0,0,0,34,0,0,0,0,0,34,0,0,0,0,0,4,1,1,9,2,2,2,2,2,2,2,2,2,2,2,2,8,30,0,48,48,0,0,44,42,40,46,0,0,0,0,0,0,44,40,46,0,0,0,0,0,0,0,14,0,0,0,0,0,0,30,31,0,11,48,3,2,2},
         {2,2,2,2,2,8,31,31,31,31,34,31,31,31,31,31,34,31,31,31,31,31,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,1,1,1,1,9,0,0,14,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,14,0,0,0,0,4,1,1,1,1,1,1,2,2,2},
         {2,2,2,2,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,0,0,14,0,0,0,0,0,0,41,40,42,45,0,0,0,0,0,0,0,0,0,14,0,0,0,0,3,2,2,2,2,2,2,2,2,2},
         {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,31,31,13,31,31,31,31,31,31,31,31,31,13,31,31,31,31,31,31,31,31,31,13,31,31,31,31,3,2,2,2,2,2,2,2,2,2},
@@ -80,10 +81,20 @@ Map2::Map2(SDL_Renderer* renderer)
 
 
 
- // Khởi tạo các biến animation hoa
+
     hoaFrame = false;
     hoaTimer = 0.0f;
     hoaFrameTime = 0.3f;
+
+
+
+map2Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
+if (!map2Music) {
+    std::cout << "Lỗi load nhạc Map2: " << Mix_GetError() << std::endl;
+} else {
+    Mix_PlayMusic(map2Music, -1);
+}
+
 
 }
 
@@ -181,7 +192,7 @@ void Map2::render(SDL_Renderer* renderer, SDL_Rect camera) {
                 case 45: current=tile45; break;
                 case 46: current=tile46; break;
                 case 47:
-                case 48: current=hoaFrame?tile48:tile47; break;  // <-- đây chèn animation hoa
+                case 48: current=hoaFrame?tile48:tile47; break;
                 default: current=nullptr; break;
             }
 
@@ -223,7 +234,7 @@ void Map2::updateEnemy(float deltaTime, Player& player) {
     hoaTimer += deltaTime;
     if(hoaTimer >= hoaFrameTime) {
         hoaTimer = 0.0f;
-        hoaFrame = !hoaFrame; // chuyển frame
+        hoaFrame = !hoaFrame;
     }
 }
 
@@ -233,8 +244,11 @@ bool Map2::checkNextMapTile(Player* player) {
     int tileX = playerRect.x / tileSize;
     int tileY = playerRect.y / tileSize;
 
-    // Tile cửa chuyển map
-    if (mapData[tileY][tileX] == 10) {
+
+    if (mapData[tileY][tileX] == 11) {
+
+    Mix_HaltMusic();
+
         return true;
     }
     return false;

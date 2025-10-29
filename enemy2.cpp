@@ -9,7 +9,7 @@ bool Enemy2::checkCollision(const SDL_Rect& rect)
 
 Enemy2::Enemy2(SDL_Renderer* renderer, int x, int y, int rangeTiles)
 {
-    // Nạp 3 ảnh dơi
+
     texture1 = IMG_LoadTexture(renderer, "assets/char/doi1.png");
     texture2 = IMG_LoadTexture(renderer, "assets/char/doi2.png");
     texture3 = IMG_LoadTexture(renderer, "assets/char/doi3.png");
@@ -26,7 +26,7 @@ Enemy2::Enemy2(SDL_Renderer* renderer, int x, int y, int rangeTiles)
     speed = 350.0f;
     direction = 1;
     animTimer = 0.0f;
-    frameIndex = 0; // bắt đầu từ frame đầu
+    frameIndex = 0;
 }
 
 Enemy2::~Enemy2()
@@ -38,7 +38,7 @@ Enemy2::~Enemy2()
 
 void Enemy2::update(float deltaTime)
 {
-    // Di chuyển lên xuống
+
     dstRect.y -= static_cast<int>(speed * direction * deltaTime);
 
     if (dstRect.y < startY - moveRange)
@@ -46,7 +46,7 @@ void Enemy2::update(float deltaTime)
     else if (dstRect.y > startY + moveRange)
         direction = 1;
 
-    // Animation
+
     animTimer += deltaTime;
     if (animTimer >= 0.1f) {
         animTimer = 0;

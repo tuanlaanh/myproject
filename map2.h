@@ -4,6 +4,7 @@
 #include "map1.h"
 #include "enemy.h"
 #include "enemy2.h"
+#include <SDL_mixer.h>
 
 class Map2 : public Map1 {
 public:
@@ -26,7 +27,7 @@ Enemy enemy1;
     Map2(SDL_Renderer* renderer);
     ~Map2();
 
-    //các hàm riêng của map2
+
     int chieungang() const;
     int chieudoc() const;
 
@@ -59,7 +60,7 @@ private:
   SDL_Texture* tile47;
   SDL_Texture* tile48;
 
-
+Mix_Music* map2Music;
 
 
 };

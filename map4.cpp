@@ -1,28 +1,31 @@
 #include "map4.h"
 #include <iostream>
+#include <SDL_mixer.h>
 
-Map4::Map4(SDL_Renderer* renderer) : Map1(renderer) {
+Map4::Map4(SDL_Renderer* renderer, Player* player) : Map1(renderer) {
 
     nen = IMG_LoadTexture(renderer, "nen.png");
     if (!nen) {
-        std::cout << "Không load được nền map4: " << IMG_GetError() << std::endl;
+        std::cout << IMG_GetError() << std::endl;
     }
 
-    // Dữ liệu bản đồ
+
+
+
     int level[15][40] = {
         {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {2,61,61,61,61,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2},
-        {2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2},
-        {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+        {8,0,0,0,0,0,0,0,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+        {8,0,0,67,0,0,63,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,67,0,0,0,70,2},
+        {2,61,61,61,61,61,62,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,63,0,0,60,61,61,61,61,61,61,61,61,2},
+        {2,2,2,2,2,2,8,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,60,61,61,61,62,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,8,0,0,67,0,65,0,0,0,65,0,0,0,65,0,0,0,65,0,67,0,3,2,2,2,2,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,2,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,2,2,2,2,2,2,2,2,2,2,2,2,2},
         {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
         {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
     };
@@ -34,20 +37,42 @@ Map4::Map4(SDL_Renderer* renderer) : Map1(renderer) {
         }
     }
 
-    // Load tile tuyết
+
     tile60 = IMG_LoadTexture(renderer, "assets/map/tuyet11.png");
     tile61 = IMG_LoadTexture(renderer, "assets/map/tuyet22.png");
     tile62 = IMG_LoadTexture(renderer, "assets/map/tuyet33.png");
+    tile63 = IMG_LoadTexture(renderer, "assets/map/nguoituyet.png");
+    tile64 = IMG_LoadTexture(renderer, "assets/map/day.png");
+    tile65 = IMG_LoadTexture(renderer, "assets/map/dayduoi.png");
+    tile66 = IMG_LoadTexture(renderer, "assets/map/daytren.png");
+    tile67 = IMG_LoadTexture(renderer, "assets/map/cotrang.png");
+    tile68 = IMG_LoadTexture(renderer, "assets/map/tuyet33.png");
+    tile70 = IMG_LoadTexture(renderer, "assets/map/endgame.png");
+if (!tile70) std::cout << "Lỗi load tile70: " << IMG_GetError() << std::endl;
 
     if (!tile60 || !tile61 || !tile62) {
         std::cout << "Lỗi load tile tuyết: " << IMG_GetError() << std::endl;
     }
+
+
+
+    boss = new Boss(renderer, 800, 360);
 }
 
 Map4::~Map4() {
+
+    delete boss;
     if (tile60) SDL_DestroyTexture(tile60);
     if (tile61) SDL_DestroyTexture(tile61);
     if (tile62) SDL_DestroyTexture(tile62);
+    if (tile63) SDL_DestroyTexture(tile63);
+    if (tile64) SDL_DestroyTexture(tile64);
+    if (tile65) SDL_DestroyTexture(tile65);
+    if (tile66) SDL_DestroyTexture(tile66);
+    if (tile67) SDL_DestroyTexture(tile67);
+    if (tile68) SDL_DestroyTexture(tile68);
+     if (tile68) SDL_DestroyTexture(tile70);
+
 }
 
 void Map4::render(SDL_Renderer* renderer, SDL_Rect camera) {
@@ -64,12 +89,19 @@ void Map4::render(SDL_Renderer* renderer, SDL_Rect camera) {
 
             SDL_Texture* current = nullptr;
 
-            // tile tuyết riêng
+
             if (tileType == 60) current = tile60;
             else if (tileType == 61) current = tile61;
             else if (tileType == 62) current = tile62;
+            else if (tileType == 63) current = tile63;
+            else if (tileType == 64) current = tile64;
+            else if (tileType == 65) current = tile65;
+            else if (tileType == 66) current = tile66;
+            else if (tileType == 67) current = tile67;
+            else if (tileType == 68) current = tile68;
+            else if (tileType == 70) current = tile70;
             else {
-                // tile thường kế thừa từ Map1
+
                 switch (tileType) {
                     case 1: current = tile1; break;
                     case 2: current = tile2; break;
@@ -89,12 +121,89 @@ void Map4::render(SDL_Renderer* renderer, SDL_Rect camera) {
                 SDL_RenderCopy(renderer, current, &src, &dst);
         }
     }
+
+    if (boss)
+        boss->render(renderer, camera);
+
 }
 
-void Map4::updateEnemy(float deltaTime, Player& player) {
-    // Tạm thời trống
-}
 
 bool Map4::checkPrevMapTile(Player* player) {
+
     return false;
+}
+
+
+void Map4::updateEnemy(float deltaTime, Player& player, SDL_Renderer* renderer) {
+
+    if (boss) {
+        boss->update(deltaTime, player, *this);
+
+        SDL_Rect playerRect = player.getRect();
+        SDL_Rect bossRect   = boss->getRect();
+
+        float playerNextY = playerRect.y + player.getVelY() * deltaTime;
+        float playerBottom = playerNextY + playerRect.h;
+        float bossTop = bossRect.y;
+        if (SDL_HasIntersection(&playerRect, &bossRect)) {
+            if (player.getVelY() > 0 && (playerBottom - bossTop) <= 40 && !player.isInvincible()) {
+                boss->takeHit();
+                player.bounce();
+                player.setPosition(playerRect.x, bossTop - playerRect.h);
+                player.setInvincible(0.2f);
+            } else if (!player.isInvincible()) {
+                player.resetToSpawn();
+                boss->reset();
+                player.setInvincible(0.2f);
+            }
+        }
+
+        player.updateInvincible(deltaTime);
+
+
+       if (boss && boss->isDead()) {
+    delete boss;
+    boss = nullptr;
+    bossDead = true;
+
+    if (map4Music && Mix_PlayingMusic()) {
+        Mix_HaltMusic();
+        Mix_FreeMusic(map4Music);
+        map4Music = nullptr;
+    }
+}
+    }
+    else {
+        bossDead = true;
+    }
+
+
+    SDL_Rect rect = player.getRect();
+    int tileX = (rect.x + rect.w / 2) / tileSize;
+    int tileY = (rect.y + rect.h / 2) / tileSize;
+
+    if (tileY >= 0 && tileY < (int)mapData.size() &&
+        tileX >= 0 && tileX < (int)mapData[tileY].size()) {
+
+        if (mapData[tileY][tileX] == 70) {
+            if (bossDead) {
+                SDL_Texture* endTex = IMG_LoadTexture(renderer, "assets/map/endgame.png");
+                if (endTex) {
+                    SDL_RenderClear(renderer);
+                    SDL_Rect full = {0, 0, 1280, 720};
+                    SDL_RenderCopy(renderer, endTex, NULL, &full);
+                    SDL_RenderPresent(renderer);
+                    SDL_Delay(3000);
+                    SDL_DestroyTexture(endTex);
+                } else {
+                    std::cout << "Lỗi load endgame.png: " << IMG_GetError() << std::endl;
+                }
+
+                SDL_Quit();
+                exit(0);
+            } else {
+                std::cout << "Boss chưa chết" << std::endl;
+            }
+        }
+    }
 }

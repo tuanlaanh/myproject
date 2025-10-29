@@ -2,6 +2,7 @@
 #include <iostream>
 #include "player.h"
 #include <cmath>
+#include <SDL_mixer.h>
 
 int Map1::chieungang() const {
     return (int)mapData[0].size() * tileSize;
@@ -16,6 +17,14 @@ Map1::Map1(SDL_Renderer* renderer) {  // constructor
     if (!nen) {
         std::cout <<  IMG_GetError() << std::endl;
     }
+
+
+Mix_Music* map1Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
+if (!map1Music) {
+    std::cout << "Không tải được nhạc map1: " << Mix_GetError() << std::endl;
+} else {
+    Mix_PlayMusic(map1Music, -1);
+}
 
     int level[15][40] = {
         {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,21,24,0,0,0,7},
@@ -43,7 +52,7 @@ Map1::Map1(SDL_Renderer* renderer) {  // constructor
 
     }
 
-    // load tile textures
+
     tile1 = IMG_LoadTexture(renderer, "assets/map/tile_0022.png");
     tile2 = IMG_LoadTexture(renderer, "assets/map/tile_0122.png");
     tile3 = IMG_LoadTexture(renderer, "assets/map/tile_0121.png");
@@ -79,7 +88,7 @@ Map1::Map1(SDL_Renderer* renderer) {  // constructor
 
     tileSize = 64;
 
-    // Chim đậu animation
+
     birdFrame = false;
     birdTimer = 0.0f;
 
@@ -131,7 +140,7 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
             SDL_Rect src = {0, 0, tileSize, tileSize};
             SDL_Rect dst = {x * tileSize - camera.x, y * tileSize - camera.y, tileSize, tileSize};
 
-            SDL_Texture* current = nullptr; // khai biến chung
+            SDL_Texture* current = nullptr; // khai b chung
 
             if (tileType == 1) SDL_RenderCopy(renderer, tile1, &src, &dst);
             else if (tileType == 2) SDL_RenderCopy(renderer, tile2, &src, &dst);
@@ -179,37 +188,37 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
 
 
 void Map1::update(float deltaTime, Player& player) {
-    //  Animation chim đậu
+
     birdTimer += deltaTime;
     if (birdTimer >= 0.7f) {
         birdTimer = 0.0f;
         birdFrame = !birdFrame;
     }
 
-    //  Animation chim đậu 2
+
     bird2Timer += deltaTime;
     if (bird2Timer >= 0.6f) {
         bird2Timer = 0.0f;
         bird2Frame = !bird2Frame;
     }
 
-    //  Animation cây
+
     treeTimer += deltaTime;
     if (treeTimer >= 0.4f) {
         treeTimer = 0.0f;
         treeFrame = !treeFrame;
     }
-    // 🔹 Kiểm tra nếu Player chạm tile 30 (chuyển map)
+
     if (checkNextMapTile(&player)) {
-        printf("Player cham tile 30 — Chuyen sang map2!\n");
-        // T Gọi logic chuyển map thật ở đây
+        printf("Player Chuyen \n");
+
 
     }
 }
 
 
 bool Map1::checkNextMapTile(Player* player){
-    // Kích thướctile
+
      int tileSize = getTileSize();
 
 
@@ -218,22 +227,27 @@ bool Map1::checkNextMapTile(Player* player){
     int playerW = player->getWidth();
     int playerH = player->getHeight();
 
-      // Xác định tile mà playerđang đứng hoặc chạm vào
+
     int tileX = (playerX + playerW / 2) / tileSize;
     int tileY = (playerY + playerH / 2) / tileSize;
 
 
-// Giới hạn tránh truy cập ngoài mảng
+
     if (tileY < 0 || tileY >= chieudoc() || tileX < 0 || tileX >= chieungang())
         return false;
     int tileID = mapData[tileY][tileX];
 
 
-    // Nếu là tile 10 thì báo hiệu đổi map
+
     if (tileID == TILE_NEXTMAP) {
+
+
+
         return true;
+
     }
 
 
     return false;
 }
+

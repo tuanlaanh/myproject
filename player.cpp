@@ -20,21 +20,21 @@ void Player::die() {
     velX = 0.0f;
     velY = 0.0f;
 
-    // cập nhật dstRect
+    // dstRect
     dstRect.x = (int)posX;
     dstRect.y = (int)posY;
     dstRect.w = 64;
     dstRect.h = 64;
 }
 
-// Constructor
+
 Player::Player(SDL_Renderer* renderer, float x, float y) {
 
 
-    spawnX = x;   // x truyền vào constructor = vị trí an toàn trên map
-    spawnY = y;   // y truyền vào constructor = vị trí an toàn trên map
+    spawnX = x;
+    spawnY = y;
 
-     // Khởi tạo pos ban đầu bằng spawn
+
     posX = spawnX;
     posY = spawnY;
 
@@ -48,7 +48,7 @@ Player::Player(SDL_Renderer* renderer, float x, float y) {
     currentState = 0;
     currentFrame = 0;
 
-    //Load texture
+
     textureIdle = IMG_LoadTexture(renderer, "assets/char/player.png");
     textureJump = IMG_LoadTexture(renderer, "assets/char/player2.png");
 
@@ -106,7 +106,6 @@ void Player::update(float deltaTime, Map1& map) {
 
 
 
-    //  KIỂM TRACHẾT
     int tileX1 = (int)(newX) / tileSize;
     int tileX2 = (int)(newX + dstRect.w - 1) / tileSize;
     int tileY  = (int)(newY + dstRect.h - 1) / tileSize;
@@ -114,19 +113,19 @@ void Player::update(float deltaTime, Map1& map) {
     for (int tx = tileX1; tx <= tileX2; ++tx) {
         int currentTile = map.getMapData()[tileY][tx];
         if (currentTile == TILE_DEATH|| currentTile == TILE_TRAP ) {
-            die();      // quay về spawn
-            return;     // dừng update tiếp
+            die();
+            return;
         }
     }
 
 
-//  KIỂM TRA CHẾT (BẪY 2 — CHẠM DƯỚI TILE TRÊN ĐẦU)
+
 int tileYTop = (int)(newY) / tileSize;
 
 for (int tx = tileX1; tx <= tileX2; ++tx) {
     int currentTile = map.getMapData()[tileYTop][tx];
     if (currentTile == TILE_TRAP2) {
-        die();  // quay về spawn
+        die();
         return;
     }
 }
@@ -147,15 +146,15 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
                 (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45 &&tileType !=48
-                &&tileType != 56)
+                &&tileType != 56 &&tileType != 63 &&tileType != 64 &&tileType !=65 &&tileType != 66 &&tileType != 70 &&tileType != 67)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)posY, dstRect.w, dstRect.h};
 
                 if (SDL_HasIntersection(&playerRect, &tileRect)) {
-                    if (velX > 0)  // đi sang phải
+                    if (velX > 0)
                         newX = tileRect.x - dstRect.w;
-                    else if (velX < 0) // đi sang trái
+                    else if (velX < 0)
                         newX = tileRect.x + tileSize;
                     velX = 0;
                 }
@@ -171,14 +170,14 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
     int topTile    = (int)newY / tileSize;
     int bottomTile = (int)(newY + dstRect.h - 1) / tileSize;
 
-    onGround = false; // reset, để kiểm tra lại
+    onGround = false;
 
     for (int y = topTile; y <= bottomTile && y < (int)data.size(); y++) {
         for (int x = leftTile; x <= rightTile && x < (int)data[y].size(); x++) {
             int tileType = data[y][x];
             if (tileType != 0 && tileType != 5 && tileType != 6 &&
                 (tileType < 10 || tileType > 27)&&tileType != 30 &&tileType != 43 &&tileType != 41&&tileType != 44&&tileType != 45&&tileType != 48
-                &&tileType != 56)
+                &&tileType != 56&&tileType != 63 &&tileType != 64 &&tileType !=65 &&tileType != 66 &&tileType != 70 &&tileType != 67)
             {
                 SDL_Rect tileRect   = {x * tileSize, y * tileSize, tileSize, tileSize};
                 SDL_Rect playerRect = {(int)newX, (int)newY, dstRect.w, dstRect.h};
@@ -195,13 +194,13 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
                         newY = tileRect.y + tileSize;
                         velY = 0;}
 
-                        if (tileType == 50) { // tile bệ bật nhảy
-        velY = -1200.0f; // lực nhảy, chỉnh tùy ý
-        onGround = false; // để player bay lên
+                        if (tileType == 50) {
+        velY = -1200.0f;
+        onGround = false;
                         }
-         if (tileType == 51) { // tile bệ bật nhảy
-        velY = -700.0f; // lực nhảy, chỉnh tùy ý
-        onGround = false; // để player bay lên
+         if (tileType == 51) {
+        velY = -700.0f;
+        onGround = false;
     }
 
 
@@ -218,9 +217,9 @@ for (int tx = tileX1; tx <= tileX2; ++tx) {
 
 
     if (velX != 0) {
-        currentState = 1;   // đang di chuyển player2.png
+        currentState = 1;
     } else {
-        currentState = 0;   // đứng im player.png
+        currentState = 0;
     }
 
 
@@ -242,5 +241,29 @@ void Player::render(SDL_Renderer* renderer, SDL_Rect camera) {
 
     SDL_Texture* currentTexture = (currentState == 1) ? textureJump : textureIdle;
     SDL_RenderCopy(renderer, currentTexture, &srcRect, &renderQuad);
+}
+
+float Player::getVelY() const {
+    return velY;
+}
+
+void Player::bounce() {
+
+    velY = JUMP_FORCE * 1.0f;
+    onGround = false;
+    jumpCount = 1;
+}
+
+void Player::resetToSpawn() {
+
+    posX = spawnX;
+    posY = spawnY;
+    velX = 0.0f;
+    velY = 0.0f;
+    dstRect.x = (int)posX;
+    dstRect.y = (int)posY;
+    onGround = false;
+    jumpCount = 0;
+    alive = true;
 }
 

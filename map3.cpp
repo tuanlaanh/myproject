@@ -23,12 +23,12 @@ Map3::Map3(SDL_Renderer* renderer)
 
 
     if (nen) SDL_DestroyTexture(nen);
-    nen = IMG_LoadTexture(renderer, "nen.png"); // nền khác map2
+    nen = IMG_LoadTexture(renderer, "nen.png");
     if (!nen) {
         std::cout << IMG_GetError() << std::endl;
     }
 
-    // --- Giữ nguyên như map2 ---
+
     tile30 = IMG_LoadTexture(renderer, "assets/map/da.png");
     tile31 = IMG_LoadTexture(renderer, "assets/map/bay.png");
     tile32 = IMG_LoadTexture(renderer, "assets/map/bay2.png");
@@ -66,9 +66,9 @@ Map3::Map3(SDL_Renderer* renderer)
     {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
     {57,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
     {8,11,56,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,46},
-    {2,47,47,57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-    {2,35,35,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-    {8,0,0,0,0,0,0,0,0,51,0,0,0,0,0,0,0,0,0,3},
+    {2,47,47,57,0,31,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+    {2,35,35,37,0,49,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+    {8,0,0,0,0,32,0,0,0,51,0,0,0,0,0,0,0,0,0,3},
     {8,0,0,0,0,0,0,0,0,54,53,53,55,0,0,0,0,0,0,3},
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,51,3},
@@ -112,7 +112,12 @@ Map3::Map3(SDL_Renderer* renderer)
 
 
 
-
+map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
+if (map3Music) {
+    Mix_PlayMusic(map3Music, -1);
+} else {
+    printf("Không tải được nhạc map3: %s\n", Mix_GetError());
+}
 }
 
 Map3::~Map3() {
@@ -242,7 +247,6 @@ void Map3::render(SDL_Renderer* renderer, SDL_Rect camera) {
 
 }
 
-// Cập nhật quái
 void Map3::updateEnemy(float deltaTime, Player& player) {
 
     enemy3.update(deltaTime);
@@ -261,5 +265,17 @@ void Map3::updateEnemy(float deltaTime, Player& player) {
 
 
 bool Map3::checkPrevMapTile(Player* player) {
+    SDL_Rect playerRect = player->getRect();
+    int tileX = playerRect.x / tileSize;
+    int tileY = playerRect.y / tileSize;
 
-    return false;}
+    if (tileY >= 0 && tileY < (int)mapData.size() &&
+        tileX >= 0 && tileX < (int)mapData[0].size()) {
+
+        int tileType = mapData[tileY][tileX];
+        if (tileType == 11) {
+            return true;
+        }
+    }
+    return false;
+}

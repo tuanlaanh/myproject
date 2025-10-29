@@ -8,6 +8,7 @@
 #include <vector>
 #include <SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL_mixer.h>
 
 class Map3 : public Map1 {
 public:
@@ -18,9 +19,9 @@ public:
 
 
 
-    void render(SDL_Renderer* renderer, SDL_Rect camera);  // Vẽ map3
+    void render(SDL_Renderer* renderer, SDL_Rect camera);
     void updateEnemy(float deltaTime, Player& player);
-    bool checkPrevMapTile(Player* player);                 // Kiểm tra lối về map
+    bool checkPrevMapTile(Player* player);
 
     int chieungang() const;
     int chieudoc() const;
@@ -63,6 +64,7 @@ private:
         SDL_Texture* tile55;
          SDL_Texture* tile56;
           SDL_Texture* tile57;
+    Mix_Music* map3Music = nullptr;
 
 
 
