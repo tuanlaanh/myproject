@@ -479,7 +479,7 @@
 	<iostream>
 	<SDL_mixer.h>
 
-1762376186 source:d:\làm game\sytuan\map1.cpp
+1762376260 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
 	"player.h"
@@ -492,7 +492,7 @@
 	<vector>
 	"player.h"
 
-1762078676 source:d:\làm game\sytuan\player.cpp
+1762376260 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -597,7 +597,7 @@
 	<SDL.h>
 	"map1.h"
 
-1762012446 source:d:\làm game\sytuan\boss.cpp
+1762376260 source:d:\làm game\sytuan\boss.cpp
 	"boss.h"
 	"player.h"
 	<SDL2/SDL_image.h>
