@@ -1,8 +1,7 @@
 #  Alien Homecoming
 
-"Best Game 2025"
 
-**Họ và tên:** Nguyễn Sỹ Tuân
+**Sinh viên:** Nguyễn Sỹ Tuân
 **Mã sinh viên:** 24023083  
 **Thể loại:** Phiêu lưu – Platformer 2D  
 **Ngôn ngữ lập trình:** C++  
@@ -21,7 +20,7 @@ Game được lấy cảm hứng từ lối chơi của **Dadish** – đơn gi�
 ## 🌌 CỐT TRUYỆN: Hành trình trở về của kẻ lạc loài
 
 Một vụ va chạm bất ngờ khiến phi thuyền của bạn, một sinh vật ngoài hành tinh nhỏ bé, rơi xuống Trái Đất.
-Khi mở mắt ra, bạn nhận ra mình đang mắc kẹt giữa một hành tinh xa lạ — nơi bầu trời có màu xanh, cây cối mọc đầy và những sinh vật khổng lồ di chuyển khắp nơi.
+Khi mở mắt ra, bạn nhận ra mình đang mắc kẹt giữa một hành tinh xa lạ — nơi bầu trời có màu xanh, cây cối mọc đầy và những sinh vật kì lạ di chuyển khắp nơi.
 
 Không hiểu gì về thế giới này, bạn chỉ biết rằng phải tìm lại phi thuyền để quay về hành tinh quê hương trước khi năng lượng sinh tồn cạn kiệt.
 Từ những khu rừng rậm um tùm, vách đá cheo leo, đến các vùng đất băng giá lạnh lẽo, bạn phải vượt qua vô vàn địa hình hiểm trở, né tránh những mối nguy và khám phá những bí ẩn mà hành tinh xanh ẩn giấu.
@@ -41,27 +40,23 @@ Trên hành trình ấy, cậu dần nhận ra — đôi khi, điều khiến ta
 ## 🧭 Hành trình người chơi
 
 Người chơi sẽ bắt đầu từ bản đồ đầu tiên, băng qua nhiều khu vực có địa hình khác nhau  v.v.  
-Mỗi khi chạm đến **cánh cửa thần kì**, người chơi sẽ được **dịch chuyển sang map mới**, tiến gần hơn đến mục tiêu trở về hành tinh quê hương.
+Mỗi khi chạm đến **cánh cửa thần kì**, người chơi sẽ được **dịch chuyển sang map mới**, tiến gần hơn đến mục tiêu tìm kiếm phi thuyền.
 Tại vùng đất cuối cùng khi tìm thấy phi thuyền của mình bạn sẽ phải đối đầu với tên trùm canh giữ chiếc phi thuyền và khi đánh bại hắn bạn với có thể lấy lại được chiếc phi thuyền.
 
 ---
 
-## 🎨 Đồ họa
+## 🎨 Đồ họa, tài nguyên
 
 - Tài nguyên hình ảnh được lấy từ **Kenney.nl** và **tự thiết kế thêm bằng Piskel**.  
-- Toàn bộ game được dựng trong không gian **2D pixel art**, tạo cảm giác hoài cổ và gần gũi.
+- tài nguyên âm thanh được tham khảo từ game **dadish** và tổng hợp âm thanh từ nhiều nguồn khác trên mạng
 
 ---
-## 📝 Chú thích & Lưu ý
-
-- Các địa hình và map được thiết kế để **tạo thử thách liên tục**, từ rừng rậm, vực sâu, đến vùng băng giá.  
-- Double jump đã được hỗ trợ để tăng tính linh hoạt khi di chuyển qua các chướng ngại vật.  
-- Phi thuyền ở map cuối được **canh giữ bởi boss**, là mục tiêu cuối cùng của hành trình.  
-- Tài nguyên media:
-  - Hình ảnh: **Kenney.nl** + tự vẽ bằng **Piskel**
-  - Nhạc nền & hiệu ứng: SDL_mixer, tham khảo từ game Dadish và các nguồn tài nguyên miễn phí  
+## Thông tin ,chú thích 
+Sử dụng ChatGPT để hỗ trợ hiểu mã SDL, tối ưu hóa logic, phát hiện và sửa lỗi, tham khảo đoạn code, đồng thời học hỏi và nâng cao kỹ năng lập trình.
 
 
 
 ## 🔧 Cấu trúc dự án
+
+
 
