@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <SDL_mixer.h>
 
 class Map1;
 
@@ -10,7 +11,7 @@ class Player {
 public:
     Player(SDL_Renderer* renderer, float x, float y);
     ~Player();
-
+Mix_Chunk* jumpSound;
     void handleEvent(const SDL_Event& e);
     void update(float deltaTime, Map1& map);
     void render(SDL_Renderer* renderer, SDL_Rect camera);
@@ -41,7 +42,9 @@ public:
     float animTimer;
     int currentState;
     int currentFrame;
-
+    float animSpeed = 0.2f;
+    Mix_Chunk* soundNext;
+    Mix_Chunk* soundDie;
 private:
     void die();
 
@@ -64,6 +67,7 @@ private:
     bool leftPressed;
     bool rightPressed;
     bool movingX;
+    bool facingRight;
 };
 
 #endif

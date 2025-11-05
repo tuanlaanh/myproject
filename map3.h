@@ -34,7 +34,7 @@ private:
     Enemy2 enemy2;
     Enemy2 doi2;
     Enemy3 enemy3;
-
+    Mix_Chunk* dieSound = nullptr;
     SDL_Texture* tile30;
     SDL_Texture* tile31;
     SDL_Texture* tile32;

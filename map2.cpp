@@ -8,6 +8,7 @@
 #include <SDL_mixer.h>
 
 
+
 int Map2::chieungang() const {
     return (int)mapData[0].size() * tileSize;
 }
@@ -20,9 +21,14 @@ Map2::Map2(SDL_Renderer* renderer)
     : Map1(renderer),
       enemy1(renderer, 2000, 450, 6),
       enemy2(renderer, 3200, 530, 3),
-       doi2(renderer, 3900, 200, 2 ) {
+       doi2(renderer, 3900, 200, 2 ),
+       dieSound(nullptr)  {
     if(nen) SDL_DestroyTexture(nen);
     nen = IMG_LoadTexture(renderer, "maprungram.png");
+     dieSound = Mix_LoadWAV("assets/sound/die.wav");
+    if (!dieSound) {
+        std::cout << "Lỗi load die.wav: " << Mix_GetError() << std::endl;
+    }
     if (!nen) {
         std::cout << IMG_GetError() << std::endl;
     }
@@ -211,9 +217,10 @@ void Map2::updateEnemy(float deltaTime, Player& player) {
     enemy1.update(deltaTime);
 
     if (enemy1.checkCollision(player.getRect())) {
-        // Dịch chuyển player về vị trí spawn ban đầu
+
         player.setPosition(player.getSpawnX(), player.getSpawnY());
         std::cout << "Va cham voi quai! Tra ve vi tri ban dau.\n";
+        if (dieSound) Mix_PlayChannel(-1, dieSound, 0);
     }
 
 
@@ -223,11 +230,13 @@ void Map2::updateEnemy(float deltaTime, Player& player) {
      if (doi2.checkCollision(player.getRect())) {
         player.setPosition(player.getSpawnX(), player.getSpawnY());
         std::cout << "Va cham voi con doi! Tra ve vi tri ban dau.\n";
+        if (dieSound) Mix_PlayChannel(-1, dieSound, 0);
     }
 
     if (enemy2.checkCollision(player.getRect())) {
         player.setPosition(player.getSpawnX(), player.getSpawnY());
         std::cout << "Va cham voi con doi! Tra ve vi tri ban dau.\n";
+        if (dieSound) Mix_PlayChannel(-1, dieSound, 0);
     }
 
 

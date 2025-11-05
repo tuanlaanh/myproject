@@ -33,6 +33,7 @@ Enemy enemy1;
 
     Enemy2 enemy2;
      Enemy2 doi2;
+     Mix_Chunk* dieSound;
 
 
 

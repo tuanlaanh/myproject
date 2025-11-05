@@ -27,7 +27,7 @@ Enemy::Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles)
     animTimer = 0.0f;
 }
 
-// Constructor mới cho Enemy3
+
 Enemy::Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles,
              const char* img1, const char* img2)
 {

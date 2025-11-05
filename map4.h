@@ -4,11 +4,11 @@
 #include "map1.h"
 #include "boss.h"
 #include <SDL_mixer.h>
-
+extern Mix_Music* map4Music;
 class Map4 : public Map1 {
 public:
-    Map4(SDL_Renderer* renderer, Player* player);   //constructor
-    ~Map4();                        // destructor
+    Map4(SDL_Renderer* renderer, Player* player);
+    ~Map4();
     void render(SDL_Renderer* renderer, SDL_Rect camera) override;
      void updateEnemy(float deltaTime, Player& player, SDL_Renderer* renderer);
     bool checkPrevMapTile(Player* player);
@@ -30,8 +30,10 @@ Boss* boss;
     SDL_Texture* tile66;
     SDL_Texture* tile67;
     SDL_Texture* tile68;
-
+    Mix_Chunk* dieSound = nullptr;
     SDL_Texture* tile70;
+    Mix_Music* endMusic = nullptr;
+    Mix_Chunk* bogSound = nullptr;
 
 };
 extern Mix_Music* map4Music;

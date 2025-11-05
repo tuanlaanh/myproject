@@ -31,7 +31,7 @@ Boss::~Boss() {
 void Boss::takeHit() {
     if (hp <= 0) return;
     hp--;
-    velY = BOSS_JUMP_FORCE * 1.4f; // bật lên
+    velY = BOSS_JUMP_FORCE * 1.4f;
     onGround = false;
     jumpCooldown = 0.7f;
     std::cout << "Bosshit=" << hp << std::endl;
@@ -83,7 +83,7 @@ void Boss::update(float deltaTime, Player& player, Map1& map) {
         for (int tx = footX1; tx <= footX2; ++tx) {
             if (tx<0 || tx>=(int)data[footY].size()) continue;
             int t = data[footY][tx];
-            if (t!=0 && t!=5 && t!=6 && (t<10 || t>27) && t!=30 && t!=41 && t!=43 && t!=44 && t!=45 && t!=48 && t!=56 && t!=63 && t!=64 && t!=65 && t!=66 && t!=67) {
+            if (t!=0 && t!=5 && t!=6 && (t<10 || t>27) && t!=30 && t!=41 && t!=43 && t!=44 && t!=45 && t!=48 && t!=56 && t!=63 && t!=64 && t!=65 && t!=66  && t!=67 && t!=70) {
                 groundHere = true; break;
             }
         }
@@ -104,7 +104,7 @@ void Boss::update(float deltaTime, Player& player, Map1& map) {
 
     if (jumpCooldown >0.0f) jumpCooldown -= deltaTime;
 
-    // horizontal movement
+
     posX += velX * deltaTime;
     int leftTile   = (int)posX / tileSize;
     int rightTile  = (int)(posX + rect.w -1) / tileSize;
@@ -115,7 +115,7 @@ void Boss::update(float deltaTime, Player& player, Map1& map) {
         for (int x=leftTile; x<=rightTile && x<(int)data[y].size(); x++) {
             if (x<0) continue;
             int t = data[y][x];
-            if (t!=0 && t!=5 && t!=6 && (t<10 || t>27) && t!=30 && t!=41 && t!=43 && t!=44 && t!=45 && t!=48 && t!=56 && t!=63 && t!=64 && t!=65 && t!=66&& t!=67) {
+            if (t!=0 && t!=5 && t!=6 && (t<10 || t>27) && t!=30 && t!=41 && t!=43 && t!=44 && t!=45 && t!=48 && t!=56 && t!=63 && t!=64 && t!=65 && t!=66&& t!=67&& t!=70) {
                 SDL_Rect tileRect = { x*tileSize, y*tileSize, tileSize, tileSize };
                 SDL_Rect bossRect = { (int)posX, (int)posY, rect.w, rect.h };
                 if (SDL_HasIntersection(&tileRect, &bossRect)) {

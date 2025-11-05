@@ -18,7 +18,7 @@ private:
     SDL_Texture* texture3;
     SDL_Texture* currentTexture;
     SDL_Rect dstRect;
-     SDL_Renderer* renderer; // lưu renderer lại
+     SDL_Renderer* renderer;
     float speed;
     int direction;
     int startY;

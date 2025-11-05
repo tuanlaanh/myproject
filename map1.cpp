@@ -12,7 +12,7 @@ int Map1::chieudoc() const {
     return (int)mapData.size() * tileSize;
 }
 
-Map1::Map1(SDL_Renderer* renderer) {  // constructor
+Map1::Map1(SDL_Renderer* renderer) {
     nen = IMG_LoadTexture(renderer, "maprungram.png");
     if (!nen) {
         std::cout <<  IMG_GetError() << std::endl;
@@ -24,6 +24,10 @@ if (!map1Music) {
     std::cout << "Không tải được nhạc map1: " << Mix_GetError() << std::endl;
 } else {
     Mix_PlayMusic(map1Music, -1);
+}
+quamanSound = Mix_LoadWAV("assets/sound/quaman.wav");
+if (!quamanSound) {
+    std::cout << "Không load được quaman.wav: " << Mix_GetError() << std::endl;
 }
 
     int level[15][40] = {
@@ -127,6 +131,10 @@ Map1::~Map1() {   // giải phóng RAM
      if (tile28) SDL_DestroyTexture(tile28);
     if (tile29) SDL_DestroyTexture(tile29);
     if (nen) SDL_DestroyTexture(nen);
+    if (quamanSound) {
+    Mix_FreeChunk(quamanSound);
+    quamanSound = nullptr;
+}
 }
 
 void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo window
@@ -165,18 +173,18 @@ void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo 
         else if (tileType == 24) SDL_RenderCopy(renderer, tile24, &src, &dst);
         else if (tileType == 25) SDL_RenderCopy(renderer, tile25, &src, &dst);
 
-            // animation cây
+
             else if (tileType == 5 || tileType == 6) {
                 current = treeFrame ? tile5 : tile6;
                 SDL_RenderCopy(renderer, current, &src, &dst);
             }
 
-            // animation chim
+
             else if (tileType == 26 || tileType == 27 ) {
                 current = birdFrame ? tile27 : tile26;
                 SDL_RenderCopy(renderer, current, &src, &dst);
             }
-            // animation chim 2
+
         else if (tileType == 28 || tileType == 29) {
               SDL_Texture* bird2Current = bird2Frame ? tile29 : tile28;
            SDL_RenderCopy(renderer, bird2Current, &src, &dst);
@@ -211,6 +219,9 @@ void Map1::update(float deltaTime, Player& player) {
 
     if (checkNextMapTile(&player)) {
         printf("Player Chuyen \n");
+         if (quamanSound) {
+        Mix_PlayChannel(0, quamanSound, 0);
+    }
 
 
     }

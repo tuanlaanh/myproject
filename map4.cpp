@@ -3,7 +3,15 @@
 #include <SDL_mixer.h>
 
 Map4::Map4(SDL_Renderer* renderer, Player* player) : Map1(renderer) {
-
+    dieSound = Mix_LoadWAV("assets/sound/die.wav");
+if (!dieSound) {
+    std::cout << "Khong tai duoc die.wav: " << Mix_GetError() << std::endl;
+}
+bogSound = Mix_LoadWAV("assets/sound/bog.mp3");
+endMusic = Mix_LoadMUS("assets/sound/endgame.mp3");
+if (!endMusic) {
+    std::cout << "Khong tai duoc endgame.mp3: " << Mix_GetError() << std::endl;
+}
     nen = IMG_LoadTexture(renderer, "nen.png");
     if (!nen) {
         std::cout << IMG_GetError() << std::endl;
@@ -13,19 +21,19 @@ Map4::Map4(SDL_Renderer* renderer, Player* player) : Map1(renderer) {
 
 
     int level[15][40] = {
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {8,0,0,0,0,0,0,0,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {8,0,0,67,0,0,63,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,67,0,0,0,70,2},
-        {2,61,61,61,61,61,62,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,63,0,0,60,61,61,61,61,61,61,61,61,2},
-        {2,2,2,2,2,2,8,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,60,61,61,61,62,2,2,2,2,2,2,2,2},
-        {2,2,2,2,2,2,8,0,0,67,0,65,0,0,0,65,0,0,0,65,0,0,0,65,0,67,0,3,2,2,2,2,2,2,2,2,2,2,2,2},
-        {2,2,2,2,2,2,2,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,2,2,2,2,2,2,2,2,2,2,2,2,2},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,65,0,0,0,65,0,0,0,65,0,0,0,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,0,0,0,0,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+        {8,0,0,67,0,0,63,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,63,67,0,0,0,0,2},
+        {2,61,61,61,61,61,62,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,60,61,61,61,61,61,61,61,61,2},
+        {2,2,2,2,2,2,8,0,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,64,0,0,0,0,0,0,3,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,8,0,0,67,0,65,0,0,0,65,0,0,0,65,0,0,0,65,0,67,0,0,70,0,3,2,2,2,2,2,2,2,2,2},
+        {2,2,2,2,2,2,2,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,2,2,2,2,2,2,2,2,2,2},
         {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
         {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
     };
@@ -47,11 +55,11 @@ Map4::Map4(SDL_Renderer* renderer, Player* player) : Map1(renderer) {
     tile66 = IMG_LoadTexture(renderer, "assets/map/daytren.png");
     tile67 = IMG_LoadTexture(renderer, "assets/map/cotrang.png");
     tile68 = IMG_LoadTexture(renderer, "assets/map/tuyet33.png");
-    tile70 = IMG_LoadTexture(renderer, "assets/map/endgame.png");
+    tile70 = IMG_LoadTexture(renderer, "assets/map/diabay.png");
 if (!tile70) std::cout << "Lỗi load tile70: " << IMG_GetError() << std::endl;
 
     if (!tile60 || !tile61 || !tile62) {
-        std::cout << "Lỗi load tile tuyết: " << IMG_GetError() << std::endl;
+        std::cout  << IMG_GetError() << std::endl;
     }
 
 
@@ -76,7 +84,7 @@ Map4::~Map4() {
 }
 
 void Map4::render(SDL_Renderer* renderer, SDL_Rect camera) {
-    // Vẽ nền
+
     SDL_RenderCopy(renderer, nen, NULL, NULL);
 
     for (int y = 0; y < (int)mapData.size(); y++) {
@@ -151,10 +159,16 @@ void Map4::updateEnemy(float deltaTime, Player& player, SDL_Renderer* renderer) 
                 player.bounce();
                 player.setPosition(playerRect.x, bossTop - playerRect.h);
                 player.setInvincible(0.2f);
+                 if (bogSound) {
+            Mix_PlayChannel(-1, bogSound, 0);
+        }
             } else if (!player.isInvincible()) {
                 player.resetToSpawn();
                 boss->reset();
                 player.setInvincible(0.2f);
+                if (dieSound) {
+                Mix_PlayChannel(-1, dieSound, 0);
+                }
             }
         }
 
@@ -187,7 +201,10 @@ void Map4::updateEnemy(float deltaTime, Player& player, SDL_Renderer* renderer) 
 
         if (mapData[tileY][tileX] == 70) {
             if (bossDead) {
-                SDL_Texture* endTex = IMG_LoadTexture(renderer, "assets/map/endgame.png");
+                    if (endMusic) {
+                    Mix_PlayMusic(endMusic, 1);
+                    }
+                SDL_Texture* endTex = IMG_LoadTexture(renderer, "assets/map/credis.png");
                 if (endTex) {
                     SDL_RenderClear(renderer);
                     SDL_Rect full = {0, 0, 1280, 720};
@@ -196,7 +213,7 @@ void Map4::updateEnemy(float deltaTime, Player& player, SDL_Renderer* renderer) 
                     SDL_Delay(3000);
                     SDL_DestroyTexture(endTex);
                 } else {
-                    std::cout << "Lỗi load endgame.png: " << IMG_GetError() << std::endl;
+                    std::cout << IMG_GetError() << std::endl;
                 }
 
                 SDL_Quit();

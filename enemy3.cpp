@@ -5,5 +5,5 @@ Enemy3::Enemy3(SDL_Renderer* renderer, int x, int y, int rangeTiles)
             "assets/char/quai3.png",
             "assets/char/quai4.png")
 {
-     setSpeed(200.0f);
+     setSpeed(250.0f);
 }

@@ -40,6 +40,7 @@ float birdTimer = 0.0f;
 
 
     bool checkNextMapTile(Player* player);
+    Mix_Chunk* quamanSound;
 
 protected:
     std::vector<std::vector<int>> mapData;

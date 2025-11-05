@@ -61,7 +61,7 @@ Map3::Map3(SDL_Renderer* renderer)
 
     if (!tile30) std::cout << IMG_GetError() << std::endl;
 
-    // --- Map mới (tự thay layout) ---
+
    int level[40][20] = {
     {7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
     {57,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
@@ -73,10 +73,10 @@ Map3::Map3(SDL_Renderer* renderer)
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,51,3},
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,2},
-    {8,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,52,0,3},
-    {8,0,0,0,0,0,51,0,0,0,0,0,0,54,55,0,0,0,0,3},
-    {8,0,0,0,54,53,55,0,0,0,0,0,0,0,0,0,0,0,0,3},
-    {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+    {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,52,0,3},
+    {8,0,0,0,0,0,51,0,0,0,0,0,0,0,0,0,0,0,0,3},
+    {8,0,0,0,54,53,55,0,0,0,0,0,26,0,52,0,0,0,0,3},
+    {8,0,0,0,0,0,0,0,0,0,0,54,55,0,0,0,0,0,0,3},
     {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
     {8,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
     {2,1,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
@@ -118,6 +118,10 @@ if (map3Music) {
 } else {
     printf("Không tải được nhạc map3: %s\n", Mix_GetError());
 }
+dieSound = Mix_LoadWAV("assets/sound/die.wav");
+if (!dieSound) {
+    std::cout << "Khong tai duoc die.wav: " << Mix_GetError() << std::endl;
+}
 }
 
 Map3::~Map3() {
@@ -150,6 +154,10 @@ Map3::~Map3() {
     if (tile55) SDL_DestroyTexture(tile55);
     if (tile56) SDL_DestroyTexture(tile56);
     if (tile57) SDL_DestroyTexture(tile57);
+    if (dieSound) {
+    Mix_FreeChunk(dieSound);
+    dieSound = nullptr;
+}
 
 }
 
@@ -253,6 +261,9 @@ void Map3::updateEnemy(float deltaTime, Player& player) {
     if (enemy3.checkCollision(player.getRect())) {
         player.setPosition(player.getSpawnX(), player.getSpawnY());
         std::cout << "Va cham voi quai3! Tra ve vi tri ban dau.\n";
+        if (dieSound) {
+            Mix_PlayChannel(-1, dieSound, 0);
+        }
 
     }
     }

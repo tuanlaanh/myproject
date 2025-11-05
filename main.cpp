@@ -1,269 +1,336 @@
 #include <SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL_mixer.h>
 #include <iostream>
+
 #include "menu.h"
 #include "map1.h"
 #include "map2.h"
 #include "map3.h"
-#include "player.h"
-#include "enemy.h"
 #include "map4.h"
-#include <SDL_mixer.h>
+#include "player.h"
 
-#ifdef main   // dung de fix main k chay dc
+#ifdef main
 #undef main
 #endif
 
+
+
 Mix_Music* map4Music = nullptr;
 
-int main(int argc, char* argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {  //khoi tao cua so render va xac dinh loi
-        std::cout << SDL_GetError() << std::endl;
-        return 1;
-    }
+
+enum GameState {
+    STATE_MENU,
+    STATE_PLAYING,
+    STATE_PAUSED
+};
 
 
+void renderPauseMenu(SDL_Renderer* ve, SDL_Texture* resumeTexture, SDL_Texture* quitTexture) {
 
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {  // tuong tu
-        std::cout << IMG_GetError() << std::endl;
-        SDL_Quit();
-        return 1;
-    }
+    SDL_SetRenderDrawBlendMode(ve, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(ve, 0, 0, 0, 150);
+    SDL_Rect full = {0, 0, 1280, 720};
+    SDL_RenderFillRect(ve, &full);
 
+    SDL_Rect resumeBtn = {540, 300, 200, 80};
+    SDL_Rect quitBtn   = {540, 420, 200, 80};
 
-    // --- Khởi tạo SDL_mixer ---
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cout << "Lỗi âm thanh: " << Mix_GetError() << std::endl;
-    }
-
-
-    SDL_Window* cuaso = SDL_CreateWindow("Game cua toi",    // tao cua so render
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
-
-    SDL_Renderer* ve = SDL_CreateRenderer(
-        cuaso, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); //khoi tao bo ve // bo sung vsync
+    if (resumeTexture) SDL_RenderCopy(ve, resumeTexture, nullptr, &resumeBtn);
+    if (quitTexture)   SDL_RenderCopy(ve, quitTexture,   nullptr, &quitBtn);
+}
 
 
-         // --- Tải và phát nhạc menu ---
-    Mix_Music* menuMusic = Mix_LoadMUS("assets/music/nhacnen1.mp3");
-    if (!menuMusic) {
-        std::cout << "Không tải được nhạc menu: " << Mix_GetError() << std::endl;
-    } else {
-        Mix_PlayMusic(menuMusic, -1); // phát lặp vô hạn trong menu
-    }
+bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
+
+    Player player(ve, 300, 500);
+    Map1 map(ve);
+    Map2 map2(ve);
+    Map3 map3(ve);
+    Map4 map4(ve, &player);
+
 
     Mix_Music* map2Music = nullptr;
-     Mix_Music* map3Music = nullptr;
+    Mix_Music* map3Music = nullptr;
+    bool map2MusicPlaying = false;
+    bool map3MusicPlaying = false;
+    bool localMap4Playing = false;
 
 
-    bool vaogame = hienthimenu(cuaso, ve); // dung de hien thi menu
-
-    if (vaogame) {
-
-            Mix_HaltMusic(); // Dừng nhạc menu trước khi chuyển sang game
-        std::cout << "yo";
-         Player player(ve, 300, 500); // toa do spon player
-        Map1 map(ve);
-        Map2 map2(ve);
-        Map3 map3(ve);
-        Map4 map4(ve, &player);
-
-        SDL_Rect camera = {0, 0, 1280, 720};
-
-        bool running = true;   // dieu khien vl chinh xdinh game chay hay end
-        SDL_Event e;           // luu skien dau vao
-
-        // gioi han fps cho card do hoa chay do nong may
-        const int FPS = 60;                // fps
-        const int timefps = 1000 / FPS;    // time 1 khung hinh (ms)
-
-        Uint32 timestart; // bat dau 1 kh
-        int frametime;    // time xu ly 1 khung hinh
-
-        Uint32 lastTime = SDL_GetTicks(); // thoi gian truoc do
-
-        // --- thêm biến điều khiển map ---
-        int currentMap = 1;  // 1 = map1, 2 = map2, 3 = map3
-
-        while (running) {
-            timestart = SDL_GetTicks();  // bat dau 1 khung hinh
-
-            while (SDL_PollEvent(&e)) { //xac dinh sk dau vao va tra ve true neu nhan sk , tv false
-                if (e.type == SDL_QUIT) {
-                    running = false;
-                }
-                player.handleEvent(e); // xu ly phim dieu khien player
-
-                // 📌 Phím tắt chuyển map nhanh
-                if (e.type == SDL_KEYDOWN) {
-                    switch (e.key.keysym.sym) {
-                        case SDLK_1: // phím 1 -> Map1
-                            currentMap = 1;
-                            player.setPosition(100, 500); // vị trí spaw
+    SDL_Texture* resumeTexture = IMG_LoadTexture(ve, "assets/buttons/nutstart1.png");
+    SDL_Texture* quitTexture   = IMG_LoadTexture(ve, "assets/buttons/home01.png");
+    if (!resumeTexture) std::cout << "Lỗi load resume texture: " << IMG_GetError() << std::endl;
+    if (!quitTexture)   std::cout << "Lỗi load quit texture: "   << IMG_GetError() << std::endl;
 
 
-                            break;
+    SDL_Event e;
+    Uint32 lastTime = SDL_GetTicks();
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+    int currentMap = 1;
+    GameState currentState = STATE_PLAYING;
+    bool running = true;
 
-                        case SDLK_2:
-                            currentMap = 2;
-                            player.setPosition(3400, 500);
-                            std::cout << "Chuyen nhanh sang Map2\n";
-                            break;
+    while (running) {
+        Uint32 timestart = SDL_GetTicks();
 
-                        case SDLK_3:
-                            currentMap = 3;
-                            player.setPosition(100, 2100);
-                            std::cout << "Chuyen nhanh sang Map3\n";
-                            break;
 
-                        case SDLK_4:
-                          currentMap = 4;
-                            player.setPosition(100, 500);
-                            std::cout << "Chuyen nhanh sang Map4\n";
-                            break;
-                    }
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+
+
+                SDL_DestroyTexture(resumeTexture);
+                SDL_DestroyTexture(quitTexture);
+
+                if (map2Music) { Mix_FreeMusic(map2Music); map2Music = nullptr; }
+                if (map3Music) { Mix_FreeMusic(map3Music); map3Music = nullptr; }
+                if (localMap4Playing && map4Music) { Mix_FreeMusic(map4Music); map4Music = nullptr; }
+                return false;
+            }
+
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
+                if (currentState == STATE_PLAYING) currentState = STATE_PAUSED;
+                else if (currentState == STATE_PAUSED) currentState = STATE_PLAYING;
+            }
+
+
+            if (currentState == STATE_PLAYING) {
+                player.handleEvent(e);
+            }
+
+
+            if (e.type == SDL_KEYDOWN && currentState == STATE_PLAYING) {
+                switch (e.key.keysym.sym) {
+                    case SDLK_1:
+                        currentMap = 1;
+                        player.setPosition(100, 500);
+                        Mix_HaltMusic();
+
+                        break;
+                    case SDLK_2:
+                        currentMap = 2;
+                        player.setPosition(3400, 500);
+                        Mix_HaltMusic();
+                        if (!map2MusicPlaying) {
+                            if (map2Music) Mix_FreeMusic(map2Music);
+                            map2Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
+                            if (map2Music) { Mix_PlayMusic(map2Music, -1); map2MusicPlaying = true; }
+                            else std::cout << "Lỗi load map2 music: " << Mix_GetError() << std::endl;
+                        } else {
+                            if (map2Music) Mix_PlayMusic(map2Music, -1);
+                        }
+                        break;
+                    case SDLK_3:
+                        currentMap = 3;
+                        player.setPosition(100, 2100);
+                        Mix_HaltMusic();
+                        if (!map3MusicPlaying) {
+                            if (map3Music) Mix_FreeMusic(map3Music);
+                            map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
+                            if (map3Music) { Mix_PlayMusic(map3Music, -1); map3MusicPlaying = true; }
+                            else std::cout << "Lỗi load map3 music: " << Mix_GetError() << std::endl;
+                        } else {
+                            if (map3Music) Mix_PlayMusic(map3Music, -1);
+                        }
+                        break;
+                    case SDLK_4:
+                        currentMap = 4;
+                        player.setPosition(100, 500);
+                        Mix_HaltMusic();
+                        if (!localMap4Playing) {
+                            if (map4Music) Mix_FreeMusic(map4Music); // safety
+                            map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
+                            if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
+                            else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                        } else {
+                            if (map4Music) Mix_PlayMusic(map4Music, -1);
+                        }
+                        break;
                 }
             }
-static bool map2MusicPlaying = false;
-static bool map3MusicPlaying = false;
-static bool map4MusicPlaying = false;
-            // tinh deltaTime
-            Uint32 currentTime = SDL_GetTicks();
-            float deltaTime = (currentTime - lastTime) / 1000.0f;
-            lastTime = currentTime;
 
-          // cập nhật theo map hiện tại
-if (currentMap == 1) {
-    player.update(deltaTime, map);
-    map.update(deltaTime, player);
 
-    if (map.checkNextMapTile(&player)) {
-        Mix_HaltMusic();
+            if (currentState == STATE_PAUSED && e.type == SDL_MOUSEBUTTONDOWN) {
+                int x = e.button.x, y = e.button.y;
+                SDL_Rect resumeBtn = {540, 300, 200, 80};
+                SDL_Rect quitBtn   = {540, 420, 200, 80};
 
-        if (!map2MusicPlaying) {
-            map2Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
-            if (map2Music) Mix_PlayMusic(map2Music, -1);
-            else printf("Lỗi tải nhạc map2: %s\n", Mix_GetError());
-            map2MusicPlaying = true;
+
+                if (x >= resumeBtn.x && x <= resumeBtn.x + resumeBtn.w &&
+                    y >= resumeBtn.y && y <= resumeBtn.y + resumeBtn.h) {
+                    currentState = STATE_PLAYING;
+                }
+
+
+                if (x >= quitBtn.x && x <= quitBtn.x + quitBtn.w &&
+                    y >= quitBtn.y && y <= quitBtn.y + quitBtn.h) {
+                    Mix_HaltMusic();
+                    if (map2Music)  { Mix_FreeMusic(map2Music);  map2Music  = nullptr; map2MusicPlaying  = false; }
+                    if (map3Music)  { Mix_FreeMusic(map3Music);  map3Music  = nullptr; map3MusicPlaying  = false; }
+                    if (localMap4Playing && map4Music) { Mix_FreeMusic(map4Music); map4Music = nullptr; localMap4Playing = false; }
+
+                    SDL_DestroyTexture(resumeTexture);
+                    SDL_DestroyTexture(quitTexture);
+                    return true;
+                }
+            }
         }
 
-        currentMap = 2;
-        player.setPosition(100, 500);
-        continue;
-    }
-}
-else if (currentMap == 2) {
-    player.update(deltaTime, map2);
-    map2.update(deltaTime, player);
-    map2.updateEnemy(deltaTime, player);
 
-    if (map2.checkNextMapTile(&player)) {
-        currentMap = 3;
-        player.setPosition(200, 2100);
-        Mix_HaltMusic();
+        Uint32 currentTime = SDL_GetTicks();
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
 
-        if (!map3MusicPlaying) {
-            map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
-            if (map3Music) Mix_PlayMusic(map3Music, -1);
-            else printf("Lỗi tải nhạc map3: %s\n", Mix_GetError());
-            map3MusicPlaying = true;
-        }
-        continue;
-    }
-}
-else if (currentMap == 3) {
-    player.update(deltaTime, map3);
-    map3.update(deltaTime, player);
-    map3.updateEnemy(deltaTime, player);
+        if (currentState == STATE_PLAYING) {
 
-    if (map3.checkPrevMapTile(&player)) {
-        currentMap = 4;
-        player.setPosition(100, 500);
-        Mix_HaltMusic();
-
-        if (!map4MusicPlaying) {
-            map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
-            if (map4Music) Mix_PlayMusic(map4Music, -1);
-            else printf("Lỗi tải nhạc map4/boss: %s\n", Mix_GetError());
-            map4MusicPlaying = true;
-        }
-        continue;
-    }
-}
-else if (currentMap == 4) {
-    player.update(deltaTime, map4);
-    map4.update(deltaTime, player);
-    map4.updateEnemy(deltaTime, player, ve);
-
-    // --- nhạc boss chỉ load 1 lần khi vào map4 ---
-    if (!map4MusicPlaying) {
-        Mix_HaltMusic();
-        map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
-        if (map4Music) Mix_PlayMusic(map4Music, -1);
-        else printf("Lỗi tải nhạc boss map4: %s\n", Mix_GetError());
-        map4MusicPlaying = true;
-    }
-}
-            //  camera
-            camera.x = player.getX() - camera.w / 2;
-            camera.y = player.getY() - camera.h / 2;
-
-            if (camera.x < 0) { camera.x = 0; }
-            if (camera.y < 0) { camera.y = 0; }
-
-            // giới hạn camera theo map hiện tại
             if (currentMap == 1) {
-                if (camera.x > map.chieungang() - camera.w) { camera.x = map.chieungang() - camera.w; }
-                if (camera.y > map.chieudoc() - camera.h) { camera.y = map.chieudoc() - camera.h; }
-            }
-            else if (currentMap == 2) {
-                if (camera.x > map2.chieungang() - camera.w) { camera.x = map2.chieungang() - camera.w; }
-                if (camera.y > map2.chieudoc() - camera.h) { camera.y = map2.chieudoc() - camera.h; }
-            }
-            else if (currentMap == 3) {
-                if (camera.x > map3.chieungang() - camera.w) { camera.x = map3.chieungang() - camera.w; }
-                if (camera.y > map3.chieudoc() - camera.h) { camera.y = map3.chieudoc() - camera.h; }
-            }
-            else if (currentMap == 4) {
-           if (camera.x > map4.chieungang() - camera.w) { camera.x = map4.chieungang() - camera.w; }
-            if (camera.y > map4.chieudoc() - camera.h) { camera.y = map4.chieudoc() - camera.h; }
-          }
+                player.update(deltaTime, map);
+                map.update(deltaTime, player);
+                if (map.checkNextMapTile(&player)) {
 
-            // ve man hinh
-            SDL_SetRenderDrawColor(ve, 0, 0, 0, 255);
-            SDL_RenderClear(ve);
-
-            // ve map va player
-            if (currentMap == 1)
-                map.render(ve, camera);
-            else if (currentMap == 2)
-                map2.render(ve, camera);
-            else if (currentMap == 3) // thêm render map3
-                map3.render(ve, camera);
-            else if (currentMap == 4) //dd
-            map4.render(ve, camera);
-
-            player.render(ve, camera);
-
-            SDL_RenderPresent(ve); // hien thi khung hinh
-
-            // gioi han fps
-            frametime = SDL_GetTicks() - timestart;
-            if (timefps > frametime) {
-                SDL_Delay(timefps - frametime);
+                    currentMap = 2; player.setPosition(100, 500);
+                    Mix_HaltMusic();
+                    if (!map2MusicPlaying) {
+                        if (map2Music) Mix_FreeMusic(map2Music);
+                        map2Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
+                        if (map2Music) { Mix_PlayMusic(map2Music, -1); map2MusicPlaying = true; }
+                        else std::cout << Mix_GetError() << std::endl;
+                    } else if (map2Music) Mix_PlayMusic(map2Music, -1);
+                    continue;
+                }
+            } else if (currentMap == 2) {
+                player.update(deltaTime, map2);
+                map2.update(deltaTime, player);
+                map2.updateEnemy(deltaTime, player);
+                if (map2.checkNextMapTile(&player)) {
+                    currentMap = 3; player.setPosition(200, 2100);
+                    Mix_HaltMusic();
+                    if (!map3MusicPlaying) {
+                        if (map3Music) Mix_FreeMusic(map3Music);
+                        map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
+                        if (map3Music) { Mix_PlayMusic(map3Music, -1); map3MusicPlaying = true; }
+                        else std::cout << "Lỗi load map3 music: " << Mix_GetError() << std::endl;
+                    } else if (map3Music) Mix_PlayMusic(map3Music, -1);
+                    continue;
+                }
+            } else if (currentMap == 3) {
+                player.update(deltaTime, map3);
+                map3.update(deltaTime, player);
+                map3.updateEnemy(deltaTime, player);
+                if (map3.checkPrevMapTile(&player)) {
+                    currentMap = 4; player.setPosition(100, 500);
+                    Mix_HaltMusic();
+                    if (!localMap4Playing) {
+                        if (map4Music) Mix_FreeMusic(map4Music);
+                        map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
+                        if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
+                        else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                    } else if (map4Music) Mix_PlayMusic(map4Music, -1);
+                    continue;
+                }
+            } else if (currentMap == 4) {
+                player.update(deltaTime, map4);
+                map4.update(deltaTime, player);
+                map4.updateEnemy(deltaTime, player, ve);
+                if (!localMap4Playing) {
+                    if (map4Music) Mix_FreeMusic(map4Music);
+                    map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
+                    if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
+                    else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                }
             }
         }
+
+
+        SDL_Rect camera = {0,0,1280,720};
+        camera.x = player.getX() - camera.w / 2;
+        camera.y = player.getY() - camera.h / 2;
+        if (camera.x < 0) camera.x = 0;
+        if (camera.y < 0) camera.y = 0;
+
+        int mapW = 0, mapH = 0;
+        if (currentMap == 1) { mapW = map.chieungang(); mapH = map.chieudoc(); }
+        if (currentMap == 2) { mapW = map2.chieungang(); mapH = map2.chieudoc(); }
+        if (currentMap == 3) { mapW = map3.chieungang(); mapH = map3.chieudoc(); }
+        if (currentMap == 4) { mapW = map4.chieungang(); mapH = map4.chieudoc(); }
+
+        if (camera.x > mapW - camera.w) camera.x = mapW - camera.w;
+        if (camera.y > mapH - camera.h) camera.y = mapH - camera.h;
+
+
+        SDL_SetRenderDrawColor(ve, 0, 0, 0, 255);
+        SDL_RenderClear(ve);
+
+        if (currentMap == 1) map.render(ve, camera);
+        else if (currentMap == 2) map2.render(ve, camera);
+        else if (currentMap == 3) map3.render(ve, camera);
+        else if (currentMap == 4) map4.render(ve, camera);
+
+        player.render(ve, camera);
+
+        if (currentState == STATE_PAUSED) {
+            renderPauseMenu(ve, resumeTexture, quitTexture);
+        }
+
+        SDL_RenderPresent(ve);
+
+
+        Uint32 frameTime = SDL_GetTicks() - timestart;
+        if (frameTime < (Uint32)frameDelay) SDL_Delay(frameDelay - frameTime);
     }
-    Mix_FreeMusic(menuMusic);
+
+    if (map2Music)  { Mix_FreeMusic(map2Music); map2Music = nullptr; }
+    if (map3Music)  { Mix_FreeMusic(map3Music); map3Music = nullptr; }
+    if (localMap4Playing && map4Music) { Mix_FreeMusic(map4Music); map4Music = nullptr; }
+
+    SDL_DestroyTexture(resumeTexture);
+    SDL_DestroyTexture(quitTexture);
+    return false;
+}
+
+int main(int argc, char* argv[]) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+        std::cout << "SDL_Init lỗi: " << SDL_GetError() << std::endl; return 1;
+    }
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        std::cout << "IMG_Init lỗi: " << IMG_GetError() << std::endl; SDL_Quit(); return 1;
+    }
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cout << "Mix_OpenAudio lỗi: " << Mix_GetError() << std::endl;
+    }
+
+    SDL_Window* cuaso = SDL_CreateWindow("Alien Homcoming", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
+    SDL_Renderer* ve = SDL_CreateRenderer(cuaso, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+    Mix_Music* menuMusic = Mix_LoadMUS("assets/music/nhacnen1.mp3");
+
+    bool running = true;
+    while (running) {
+
+        if (menuMusic) {
+            Mix_HaltMusic();
+            Mix_PlayMusic(menuMusic, -1);
+        }
+
+        bool vaogame = hienthimenu(cuaso, ve);
+        if (!vaogame) break;
+
+
+        Mix_HaltMusic();
+        bool backToMenu = startGame(cuaso, ve);
+        if (!backToMenu) {
+
+            running = false;
+        } else {
+            running = true;
+        }
+    }
+
+    if (menuMusic) Mix_FreeMusic(menuMusic);
     Mix_CloseAudio();
     SDL_DestroyRenderer(ve);
     SDL_DestroyWindow(cuaso);
     IMG_Quit();
-    Mix_CloseAudio();
     SDL_Quit();
     return 0;
 }
-
-#ifdef _WIN32
-#include <windows.h>
-#endif

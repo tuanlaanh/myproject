@@ -1,17 +1,15 @@
 # depslib dependency file v1.0
-1761589417 source:d:\làm game\sytuan\main.cpp
+1762376047 source:d:\làm game\sytuan\main.cpp
 	<SDL.h>
 	<SDL2/SDL_image.h>
+	<SDL_mixer.h>
 	<iostream>
 	"menu.h"
 	"map1.h"
 	"map2.h"
 	"map3.h"
-	"player.h"
-	"enemy.h"
 	"map4.h"
-	<SDL_mixer.h>
-	<windows.h>
+	"player.h"
 
 1756738932 d:\sdl2-2.32.10\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -458,8 +456,9 @@
 1758911050 source:d:\làm game\sytuan\game.cpp
 	<SDL.h>
 
-1759749958 source:d:\làm game\sytuan\menu.cpp
+1762375937 source:d:\làm game\sytuan\menu.cpp
 	"menu.h"
+	<SDL_mixer.h>
 
 1758911010 d:\làm game\sytuan\menu.cpp
 	<SDL.h>
@@ -474,39 +473,41 @@
 	"begin_code.h"
 	"close_code.h"
 
-1758996624 d:\làm game\sytuan\menu.h
+1761811973 d:\làm game\sytuan\menu.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
+	<SDL_mixer.h>
 
-1761576079 source:d:\làm game\sytuan\map1.cpp
+1762376186 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
 	"player.h"
 	<cmath>
 	<SDL_mixer.h>
 
-1761761001 d:\làm game\sytuan\map1.h
+1762369342 d:\làm game\sytuan\map1.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 	<vector>
 	"player.h"
 
-1761597068 source:d:\làm game\sytuan\player.cpp
+1762078676 source:d:\làm game\sytuan\player.cpp
 	"player.h"
 	<SDL2/SDL_image.h>
 	<iostream>
 	"map1.h"
-	"map2.h"
 	<cmath>
+	<SDL_mixer.h>
 
-1761760381 d:\làm game\sytuan\player.h
+1762077644 d:\làm game\sytuan\player.h
 	<SDL.h>
 	<string>
+	<SDL_mixer.h>
 
 1759235914 source:d:\làm game\sytuan\layer.cpp
 
-1761761001 source:d:\làm game\sytuan\map2.cpp
+1762368838 source:d:\làm game\sytuan\map2.cpp
 	"map2.h"
 	<iostream>
 	"player.h"
@@ -515,31 +516,31 @@
 	<algorithm>
 	<SDL_mixer.h>
 
-1761761001 d:\làm game\sytuan\map2.h
+1762368469 d:\làm game\sytuan\map2.h
 	"map1.h"
 	"enemy.h"
 	"enemy2.h"
 	<SDL_mixer.h>
 
-1761203708 source:d:\làm game\sytuan\enemy.cpp
+1762376148 source:d:\làm game\sytuan\enemy.cpp
 	"enemy.h"
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_log.h>
 	<iostream>
 
-1761203695 d:\làm game\sytuan\enemy.h
+1762368469 d:\làm game\sytuan\enemy.h
 	<SDL.h>
 	<SDL2/SDL_image.h>
 
-1760798102 d:\làm game\sytuan\enemy2.h
+1762376138 d:\làm game\sytuan\enemy2.h
 	<SDL.h>
 
-1761203706 source:d:\làm game\sytuan\enemy2.cpp
+1761761382 source:d:\làm game\sytuan\enemy2.cpp
 	"enemy2.h"
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1761760381 source:d:\làm game\sytuan\map3.cpp
+1762370187 source:d:\làm game\sytuan\map3.cpp
 	"map3.h"
 	<iostream>
 	"player.h"
@@ -547,7 +548,7 @@
 	"enemy2.h"
 	<algorithm>
 
-1761761001 d:\làm game\sytuan\map3.h
+1762370187 d:\làm game\sytuan\map3.h
 	"map1.h"
 	"enemy.h"
 	"enemy2.h"
@@ -569,15 +570,15 @@
 1761203698 d:\làm game\sytuan\enemy3.h
 	"enemy.h"
 
-1761074151 source:d:\làm game\sytuan\enemy3.cpp
+1761837463 source:d:\làm game\sytuan\enemy3.cpp
 	"enemy3.h"
 
-1761760581 source:d:\làm game\sytuan\map4.cpp
+1762376186 source:d:\làm game\sytuan\map4.cpp
 	"map4.h"
 	<iostream>
 	<SDL_mixer.h>
 
-1761760381 d:\làm game\sytuan\map4.h
+1762376141 d:\làm game\sytuan\map4.h
 	<SDL2/SDL_image.h>
 	"map1.h"
 	"boss.h"
@@ -596,7 +597,7 @@
 	<SDL.h>
 	"map1.h"
 
-1761760381 source:d:\làm game\sytuan\boss.cpp
+1762012446 source:d:\làm game\sytuan\boss.cpp
 	"boss.h"
 	"player.h"
 	<SDL2/SDL_image.h>
