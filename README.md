@@ -53,9 +53,10 @@ Tại vùng đất cuối cùng khi tìm thấy phi thuyền của mình bạn s
 ---
 ## Thông tin ,chú thích 
 Sử dụng ChatGPT để hỗ trợ hiểu mã SDL, tối ưu hóa logic, phát hiện và sửa lỗi, tham khảo đoạn code, đồng thời học hỏi và nâng cao kỹ năng lập trình.
-có tham khảo code và học hỏi từ các nguồn:
--https://youtu.be/FQOiFUl93lI?si=cZvcsHR8shXqvha9
--https://youtu.be/LETiw3RocZA?si=1r4F0V1ytuAOy8tH
+có tham khảo code và học hỏi cấu trúc chính trong game từ các nguồn:
+tham khảo cấu trúc map ma trận-https://youtu.be/FQOiFUl93lI?si=cZvcsHR8shXqvha9
+ tham khảo cơ chế enemy-https://youtu.be/LETiw3RocZA?si=1r4F0V1ytuAOy8tH
+ và các nguồn khác trên youtube, lazyfoo...
 
 
 
