@@ -456,7 +456,7 @@
 1758911050 source:d:\làm game\sytuan\game.cpp
 	<SDL.h>
 
-1762375937 source:d:\làm game\sytuan\menu.cpp
+1762406479 source:d:\làm game\sytuan\menu.cpp
 	"menu.h"
 	<SDL_mixer.h>
 
@@ -479,7 +479,7 @@
 	<iostream>
 	<SDL_mixer.h>
 
-1762376260 source:d:\làm game\sytuan\map1.cpp
+1762408345 source:d:\làm game\sytuan\map1.cpp
 	"map1.h"
 	<iostream>
 	"player.h"

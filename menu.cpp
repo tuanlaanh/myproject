@@ -29,8 +29,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     }
 
     float nen2X = 0;
-
-    SDL_Texture* tenTexture = nullptr;
+SDL_Texture* tenTexture = nullptr;
     SDL_Surface* tenSurface = IMG_Load("ten.png");
     if (tenSurface) {
         tenTexture = SDL_CreateTextureFromSurface(ve, tenSurface);
@@ -44,7 +43,7 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
     SDL_Rect nutoptions = {550, 400, 200, 80};
     SDL_Rect nutthoat = {550, 500, 200, 80};
 
-    // Nút Start
+
     SDL_Texture* texstart[5] = {nullptr};
     for (int i = 0; i < 5; i++) {
         std::string filename = "assets/buttons/nutstart" + std::to_string(i + 1) + ".png";
@@ -57,7 +56,6 @@ bool hienthimenu(SDL_Window* cuaso, SDL_Renderer* ve) {
         }
     }
 
-    // Nút Options
     SDL_Texture* texoptions[5] = {nullptr};
     for (int i = 0; i < 5; i++) {
         std::string filename = "assets/buttons/nutoptions" + std::to_string(i + 1) + ".png";

@@ -260,7 +260,7 @@ void Map3::updateEnemy(float deltaTime, Player& player) {
     enemy3.update(deltaTime);
     if (enemy3.checkCollision(player.getRect())) {
         player.setPosition(player.getSpawnX(), player.getSpawnY());
-        std::cout << "Va cham voi quai3! Tra ve vi tri ban dau.\n";
+        std::cout << "Va cham voi quai\n";
         if (dieSound) {
             Mix_PlayChannel(-1, dieSound, 0);
         }

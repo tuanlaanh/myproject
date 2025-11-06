@@ -59,8 +59,8 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
 
     SDL_Texture* resumeTexture = IMG_LoadTexture(ve, "assets/buttons/nutstart1.png");
     SDL_Texture* quitTexture   = IMG_LoadTexture(ve, "assets/buttons/home01.png");
-    if (!resumeTexture) std::cout << "Lỗi load resume texture: " << IMG_GetError() << std::endl;
-    if (!quitTexture)   std::cout << "Lỗi load quit texture: "   << IMG_GetError() << std::endl;
+    if (!resumeTexture) std::cout  << IMG_GetError() << std::endl;
+    if (!quitTexture)   std::cout   << IMG_GetError() << std::endl;
 
 
     SDL_Event e;
@@ -115,7 +115,7 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                             if (map2Music) Mix_FreeMusic(map2Music);
                             map2Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
                             if (map2Music) { Mix_PlayMusic(map2Music, -1); map2MusicPlaying = true; }
-                            else std::cout << "Lỗi load map2 music: " << Mix_GetError() << std::endl;
+                            else std::cout << Mix_GetError() << std::endl;
                         } else {
                             if (map2Music) Mix_PlayMusic(map2Music, -1);
                         }
@@ -128,7 +128,7 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                             if (map3Music) Mix_FreeMusic(map3Music);
                             map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
                             if (map3Music) { Mix_PlayMusic(map3Music, -1); map3MusicPlaying = true; }
-                            else std::cout << "Lỗi load map3 music: " << Mix_GetError() << std::endl;
+                            else std::cout << Mix_GetError() << std::endl;
                         } else {
                             if (map3Music) Mix_PlayMusic(map3Music, -1);
                         }
@@ -138,10 +138,10 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                         player.setPosition(100, 500);
                         Mix_HaltMusic();
                         if (!localMap4Playing) {
-                            if (map4Music) Mix_FreeMusic(map4Music); // safety
+                            if (map4Music) Mix_FreeMusic(map4Music);
                             map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
                             if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
-                            else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                            else std::cout << Mix_GetError() << std::endl;
                         } else {
                             if (map4Music) Mix_PlayMusic(map4Music, -1);
                         }
@@ -209,7 +209,7 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                         if (map3Music) Mix_FreeMusic(map3Music);
                         map3Music = Mix_LoadMUS("assets/music/nhacnen3.mp3");
                         if (map3Music) { Mix_PlayMusic(map3Music, -1); map3MusicPlaying = true; }
-                        else std::cout << "Lỗi load map3 music: " << Mix_GetError() << std::endl;
+                        else std::cout << Mix_GetError() << std::endl;
                     } else if (map3Music) Mix_PlayMusic(map3Music, -1);
                     continue;
                 }
@@ -224,7 +224,7 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                         if (map4Music) Mix_FreeMusic(map4Music);
                         map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
                         if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
-                        else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                        else std::cout  << Mix_GetError() << std::endl;
                     } else if (map4Music) Mix_PlayMusic(map4Music, -1);
                     continue;
                 }
@@ -236,7 +236,7 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
                     if (map4Music) Mix_FreeMusic(map4Music);
                     map4Music = Mix_LoadMUS("assets/music/nhacboss.mp3");
                     if (map4Music) { Mix_PlayMusic(map4Music, -1); localMap4Playing = true; }
-                    else std::cout << "Lỗi load map4 music: " << Mix_GetError() << std::endl;
+                    else std::cout  << Mix_GetError() << std::endl;
                 }
             }
         }
@@ -290,13 +290,13 @@ bool startGame(SDL_Window* cuaso, SDL_Renderer* ve) {
 
 int main(int argc, char* argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
-        std::cout << "SDL_Init lỗi: " << SDL_GetError() << std::endl; return 1;
+        std::cout<< SDL_GetError() << std::endl; return 1;
     }
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        std::cout << "IMG_Init lỗi: " << IMG_GetError() << std::endl; SDL_Quit(); return 1;
+        std::cout  << IMG_GetError() << std::endl; SDL_Quit(); return 1;
     }
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cout << "Mix_OpenAudio lỗi: " << Mix_GetError() << std::endl;
+        std::cout  << Mix_GetError() << std::endl;
     }
 
     SDL_Window* cuaso = SDL_CreateWindow("Alien Homcoming", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);

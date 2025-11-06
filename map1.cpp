@@ -21,13 +21,13 @@ Map1::Map1(SDL_Renderer* renderer) {
 
 Mix_Music* map1Music = Mix_LoadMUS("assets/music/nhacnen2.mp3");
 if (!map1Music) {
-    std::cout << "Không tải được nhạc map1: " << Mix_GetError() << std::endl;
+    std::cout<< Mix_GetError() << std::endl;
 } else {
     Mix_PlayMusic(map1Music, -1);
 }
 quamanSound = Mix_LoadWAV("assets/sound/quaman.wav");
 if (!quamanSound) {
-    std::cout << "Không load được quaman.wav: " << Mix_GetError() << std::endl;
+    std::cout  <<Mix_GetError() << std::endl;
 }
 
     int level[15][40] = {
@@ -49,7 +49,7 @@ if (!quamanSound) {
     };
 
     mapData.resize(15, std::vector<int>(40));
-    for (int y = 0; y < 15; y++) {
+    for (int y = 0; y < 15; y++) {    // luu id tung o vi tri trong map
         for (int x = 0; x < 40; x++) {
             mapData[y][x] = level[y][x];
         }
@@ -96,12 +96,12 @@ if (!quamanSound) {
     birdFrame = false;
     birdTimer = 0.0f;
 
-    // Animation cây
+
     treeFrame = false;
     treeTimer = 0.0f;
 }
 
-Map1::~Map1() {   // giải phóng RAM
+Map1::~Map1() {
     if (tile1) SDL_DestroyTexture(tile1);
     if (tile2) SDL_DestroyTexture(tile2);
     if (tile3) SDL_DestroyTexture(tile3);
@@ -140,7 +140,7 @@ Map1::~Map1() {   // giải phóng RAM
 void Map1::render(SDL_Renderer* renderer, SDL_Rect camera) { // render map theo window
     SDL_RenderCopy(renderer, nen, NULL, NULL);
 
-    for (int y = 0; y < (int)mapData.size(); y++) {
+    for (int y = 0; y < (int)mapData.size(); y++) {  //yhxc
         for (int x = 0; x < (int)mapData[y].size(); x++) {
             int tileType = mapData[y][x];
             if (tileType == 0 || tileType == TILE_DEATH) continue;
@@ -218,7 +218,7 @@ void Map1::update(float deltaTime, Player& player) {
     }
 
     if (checkNextMapTile(&player)) {
-        printf("Player Chuyen \n");
+        printf("nextmap");
          if (quamanSound) {
         Mix_PlayChannel(0, quamanSound, 0);
     }

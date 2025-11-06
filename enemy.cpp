@@ -8,14 +8,14 @@ bool Enemy::checkCollision(const SDL_Rect& rect)
     return SDL_HasIntersection(&dstRect, &rect);
 }
 
-// Constructor
+
 Enemy::Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles)
 {
     texture1 = IMG_LoadTexture(renderer, "assets/char/quai1.png");
     texture2 = IMG_LoadTexture(renderer, "assets/char/quai2.png");
 
     if (!texture1 || !texture2) {
-        SDL_Log("Không thể load ảnh quái: %s", IMG_GetError());
+        SDL_Log("notloadquai", IMG_GetError());
     }
 
     currentTexture = texture1;
@@ -35,7 +35,7 @@ Enemy::Enemy(SDL_Renderer* renderer, int x, int y, int rangeTiles,
     texture2 = IMG_LoadTexture(renderer, img2);
 
     if (!texture1 || !texture2) {
-        SDL_Log("Không thể load ảnh quái: %s", IMG_GetError());
+        SDL_Log("notloadq", IMG_GetError());
     }
 
     currentTexture = texture1;
