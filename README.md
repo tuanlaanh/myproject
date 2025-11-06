@@ -17,7 +17,7 @@ Người chơi sẽ phải vượt qua nhiều **địa hình và chướng ng�
 Game được lấy cảm hứng từ lối chơi của **Dadish** – đơn giản nhưng đầy thử thách, tập trung vào **di chuyển, nhảy và vượt chướng ngại vật**.
 
 ---
-## 🌌 CỐT TRUYỆN: Hành trình trở về của kẻ lạc loài
+## 🌌 CỐT TRUYỆN: 
 
 Một vụ va chạm bất ngờ khiến phi thuyền của bạn, một sinh vật ngoài hành tinh nhỏ bé, rơi xuống Trái Đất.
 Khi mở mắt ra, bạn nhận ra mình đang mắc kẹt giữa một hành tinh xa lạ — nơi bầu trời có màu xanh, cây cối mọc đầy và những sinh vật kì lạ di chuyển khắp nơi.
@@ -25,7 +25,7 @@ Khi mở mắt ra, bạn nhận ra mình đang mắc kẹt giữa một hành ti
 Không hiểu gì về thế giới này, bạn chỉ biết rằng phải tìm lại phi thuyền để quay về hành tinh quê hương trước khi năng lượng sinh tồn cạn kiệt.
 Từ những khu rừng rậm um tùm, vách đá cheo leo, đến các vùng đất băng giá lạnh lẽo, bạn phải vượt qua vô vàn địa hình hiểm trở, né tránh những mối nguy và khám phá những bí ẩn mà hành tinh xanh ẩn giấu.
 
-Trên hành trình ấy, cậu dần nhận ra — đôi khi, điều khiến ta mạnh mẽ hơn không phải là nơi ta đến, mà là hành trình để tìm đường trở về.
+Trên hành trình ấy, bạn dần nhận ra — đôi khi, điều khiến ta mạnh mẽ hơn không phải là nơi ta đến, mà là hành trình để tìm đường trở về.
 
 ## 🕹️ Cơ chế chính
 
@@ -53,10 +53,31 @@ Tại vùng đất cuối cùng khi tìm thấy phi thuyền của mình bạn s
 ---
 ## Thông tin ,chú thích 
 Sử dụng ChatGPT để hỗ trợ hiểu mã SDL, tối ưu hóa logic, phát hiện và sửa lỗi, tham khảo đoạn code, đồng thời học hỏi và nâng cao kỹ năng lập trình.
+có tham khảo code và học hỏi từ các nguồn:
+-https://youtu.be/FQOiFUl93lI?si=cZvcsHR8shXqvha9
+-https://youtu.be/LETiw3RocZA?si=1r4F0V1ytuAOy8tH
+
 
 
 
 ## 🔧 Cấu trúc dự án
 
+Alien-Homcoming/
+│
+├── main.cpp              → Tệp khởi động chính, điều khiển vòng lặp game (Game Loop)
+│
+├── menu.h / menu.cpp     → Quản lý menu chính, giao diện bắt đầu và chọn bản đồ
+│
+├── player.h / player.cpp → Xử lý nhân vật chính: di chuyển, nhảy, va chạm, hoạt ảnh, trạng thái
+│
+├── enemy.cpp / enemy3.cpp   → Quản lý kẻ địch di chuyển tuần tra, va chạm và phản ứng với môi trường
+│
+├── boss.h / boss.cpp     → Quản lý trùm cuối: AI chiến đấu, thanh máu, va chạm,
+│
+├── map1.cpp → map4.cpp   → Mỗi map tương ứng với một cấp độ, có cấu trúc riêng và nhạc nền riêng
+│
+├── assets/               → Hình ảnh sprite, tilemap,âm thanh ,hiệu ứng ,background, (Pixel Art từ Kenney + Piskel)
+│
+└── README.md             → Tài liệu mô tả dự án, ý tưởng, cốt truyện, cơ chế game
 
 
